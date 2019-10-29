@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class FractalActor extends Actor {
+public class FractalView extends Actor {
 
     private static final int MAX_ITERATION = 600;
     private final int FRACTAL_WIDTH;
@@ -16,7 +16,7 @@ public class FractalActor extends Actor {
 
     Sprite sprite;
 
-    public FractalActor(ScreenViewport viewport) {
+    public FractalView(ScreenViewport viewport) {
         this.FRACTAL_WIDTH = viewport.getScreenWidth();
         this.FRACTAL_HEIGHT = viewport.getScreenHeight();
         sprite = new Sprite(new Texture(createPixelMap()));
