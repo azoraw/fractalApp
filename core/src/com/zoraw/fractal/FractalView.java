@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class FractalView extends Group implements EventListener {
 
-    private static final int MAX_ITERATION = 600;
+    private static final int MAX_ITERATION = 1000;
     private final int FRACTAL_WIDTH;
     private final int FRACTAL_HEIGHT;
 
@@ -22,7 +22,7 @@ public class FractalView extends Group implements EventListener {
         this.addListener(this);
         this.FRACTAL_WIDTH = viewport.getScreenWidth();
         this.FRACTAL_HEIGHT = viewport.getScreenHeight();
-        sprite = new Sprite(new Texture(createPixelMap()));
+        sprite = new Sprite(new Texture(createPixelMap(new ComplexNumber(0, 0))));
         setBounds(sprite.getX(), sprite.getY(), FRACTAL_WIDTH, FRACTAL_HEIGHT);
         this.setWidth(FRACTAL_WIDTH);
         this.setHeight(FRACTAL_HEIGHT);
@@ -34,7 +34,8 @@ public class FractalView extends Group implements EventListener {
         this.drawChildren(batch, parentAlpha);
     }
 
-    private Pixmap createPixelMap() {
+
+    private Pixmap createPixelMap(ComplexNumber complexNumber) {
         Pixmap pmap = new Pixmap(FRACTAL_WIDTH, FRACTAL_HEIGHT, Pixmap.Format.RGBA8888);
         pmap.setColor(Color.WHITE);
         pmap.fill();
@@ -59,38 +60,7 @@ public class FractalView extends Group implements EventListener {
                     prevRe = nextRe;
                     prevIm = nextIm;
                 }
-                pmap.drawPixel(x, y, Color.rgba8888(p / MAX_ITERATION, p * 11 / MAX_ITERATION, p * 12 / MAX_ITERATION, 1));
-            }
-        }
-        return pmap;
-    }
-
-    private Pixmap updatePixelMap(ComplexNumber initNumber) {
-        Pixmap pmap = new Pixmap(FRACTAL_WIDTH, FRACTAL_HEIGHT, Pixmap.Format.RGBA8888);
-        pmap.setColor(Color.WHITE);
-        pmap.fill();
-        pmap.setBlending(Pixmap.Blending.None);
-
-        for (int x = 0; x < FRACTAL_WIDTH; x++) {
-            for (int y = 0; y < FRACTAL_HEIGHT; y++) {
-                double[] normalizedPosition = normalizePosition(x, y);
-                double re = normalizedPosition[0];
-                double im = normalizedPosition[1];
-
-                double prevRe = 0;
-                double prevIm = 0;
-                double nextRe, nextIm;
-                int p;
-                for (p = 0; p < MAX_ITERATION; p++) {
-                    nextRe = prevRe * prevRe - prevIm * prevIm + re;
-                    nextIm = 2 * prevRe * prevIm + im;
-                    if (nextRe * nextRe + nextIm * nextIm > 2) {
-                        break;
-                    }
-                    prevRe = nextRe;
-                    prevIm = nextIm;
-                }
-                pmap.drawPixel(x, y, Color.rgba8888(p / MAX_ITERATION, p * 11 / MAX_ITERATION, p * 12 / MAX_ITERATION, 1));
+                pmap.drawPixel(x, y, Color.toIntBits(p % 255, 255, 255, 255));
             }
         }
         return pmap;
@@ -107,7 +77,7 @@ public class FractalView extends Group implements EventListener {
     public boolean handle(Event event) {
         if (event instanceof SettingsChangeEvent) {
             SettingsChangeEvent settings = (SettingsChangeEvent) event;
-            sprite = new Sprite(new Texture(updatePixelMap(settings.getInitNumber())));
+            sprite = new Sprite(new Texture(createPixelMap(settings.getInitNumber())));
             return true;
         }
         return false;
