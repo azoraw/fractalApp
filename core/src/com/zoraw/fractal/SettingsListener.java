@@ -5,11 +5,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class SettingsListener extends ClickListener {
-    private final TextField textField;
+
+    private final TextField initRe;
+    private final TextField initIm;
+
     private final SettingsTable settingsTable;
 
-    public SettingsListener(TextField textField, SettingsTable settingsTable) {
-        this.textField = textField;
+    public SettingsListener(TextField initRe, TextField initIm, SettingsTable settingsTable) {
+        this.initRe = initRe;
+        this.initIm = initIm;
         this.settingsTable = settingsTable;
     }
 
@@ -19,6 +23,6 @@ public class SettingsListener extends ClickListener {
     }
 
     private void updateSettings() {
-        settingsTable.fire(new SettingsChangeEvent(textField.getText()));
+        settingsTable.fire(new SettingsChangeEvent(Double.parseDouble(initRe.getText()), Double.parseDouble(initIm.getText())));
     }
 }

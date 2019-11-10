@@ -13,10 +13,13 @@ public class SettingsTable extends Table {
         this.setPosition(viewport.getScreenWidth() - 50, viewport.getScreenHeight());
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 
-        TextField textField = new TextField("textField", skin);
+        TextField initRe = new TextField("initRe", skin);
+        TextField initIm = new TextField("initIm", skin);
         Button button = new TextButton("button", skin);
-        button.addListener(new SettingsListener(textField, this));
-        this.add(textField);
+        button.addListener(new SettingsListener(initRe, initIm, this));
+        this.add(initRe);
+        this.row();
+        this.add(initIm);
         this.row();
         this.add(button);
     }

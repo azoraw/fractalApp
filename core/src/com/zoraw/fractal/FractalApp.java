@@ -17,7 +17,6 @@ public class FractalApp extends ApplicationAdapter {
         Gdx.input.setInputProcessor(stage);
         FractalView fractalView = new FractalView(viewport);
         SettingsTable settingsTable = new SettingsTable(viewport);
-        fractalView.addListener(new SettingsChangeListener());
         fractalView.addActor(settingsTable);
         stage.addActor(fractalView);
         stage.setKeyboardFocus(fractalView);

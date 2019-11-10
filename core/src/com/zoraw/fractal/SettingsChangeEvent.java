@@ -4,17 +4,20 @@ import com.badlogic.gdx.scenes.scene2d.Event;
 
 public class SettingsChangeEvent extends Event {
 
-    public SettingsChangeEvent(String field) {
-        this.field = field;
+    private final double initRe;
+    private final double initIm;
+
+    public SettingsChangeEvent(double initRe, double initIm) {
+        this.initRe = initRe;
+        this.initIm = initIm;
     }
 
-    String field;
-
-    public String getField() {
-        return field;
+    public double getInitRe() {
+        return initRe;
     }
 
-    public void setField(String field) {
-        this.field = field;
+    public double getInitIm() {
+        return initIm;
     }
+
 }
