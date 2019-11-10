@@ -6,8 +6,16 @@ public class SettingsChangeEvent extends Event {
 
     private final ComplexNumber initNumber;
 
-    public SettingsChangeEvent(ComplexNumber initNumber) {
+    public int getNumberOfIteration() {
+        return numberOfIteration;
+    }
+
+    private final int numberOfIteration;
+
+
+    public SettingsChangeEvent(ComplexNumber initNumber, int numberOfIteration) {
         this.initNumber = initNumber;
+        this.numberOfIteration = numberOfIteration;
     }
 
     public ComplexNumber getInitNumber() {

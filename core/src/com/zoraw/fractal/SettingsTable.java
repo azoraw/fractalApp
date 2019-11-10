@@ -12,15 +12,25 @@ public class SettingsTable extends Table {
         this.align(Align.right | Align.top);
         this.setPosition(viewport.getScreenWidth() - 50, viewport.getScreenHeight());
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
-
-        TextField initRe = new TextField("initRe", skin);
-        TextField initIm = new TextField("initIm", skin);
-        Button button = new TextButton("button", skin);
-        button.addListener(new SettingsListener(initRe, initIm, this));
+        Label re = new Label("re: ", skin);
+        Label im = new Label("im: ", skin);
+        Label numberOfIterationLabel = new Label("no iteration: ", skin);
+        Label emptyLabel = new Label("", skin);
+        TextField initRe = new TextField("-0.7", skin);
+        TextField initIm = new TextField("0.27015", skin);
+        TextField numberOfIteration = new TextField("", skin);
+        Button button = new TextButton("generate", skin);
+        button.addListener(new SettingsListener(initRe, initIm, numberOfIteration, this));
+        this.add(re);
         this.add(initRe);
         this.row();
+        this.add(im);
         this.add(initIm);
         this.row();
+        this.add(numberOfIterationLabel);
+        this.add(numberOfIteration);
+        this.row();
+        this.add(emptyLabel);
         this.add(button);
     }
 }
