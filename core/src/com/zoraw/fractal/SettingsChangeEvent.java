@@ -4,20 +4,15 @@ import com.badlogic.gdx.scenes.scene2d.Event;
 
 public class SettingsChangeEvent extends Event {
 
-    private final double initRe;
-    private final double initIm;
+    private final ComplexNumber initNumber;
 
-    public SettingsChangeEvent(double initRe, double initIm) {
-        this.initRe = initRe;
-        this.initIm = initIm;
+    public SettingsChangeEvent(ComplexNumber initNumber) {
+        this.initNumber = initNumber;
     }
 
-    public double getInitRe() {
-        return initRe;
+    public ComplexNumber getInitNumber() {
+        return initNumber;
     }
 
-    public double getInitIm() {
-        return initIm;
-    }
 
 }

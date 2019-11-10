@@ -65,7 +65,7 @@ public class FractalView extends Group implements EventListener {
         return pmap;
     }
 
-    private Pixmap updatePixelMap(double initRe, double initIm) {
+    private Pixmap updatePixelMap(ComplexNumber initNumber) {
         Pixmap pmap = new Pixmap(FRACTAL_WIDTH, FRACTAL_HEIGHT, Pixmap.Format.RGBA8888);
         pmap.setColor(Color.WHITE);
         pmap.fill();
@@ -77,14 +77,14 @@ public class FractalView extends Group implements EventListener {
                 double re = normalizedPosition[0];
                 double im = normalizedPosition[1];
 
-                double prevRe = initRe;
-                double prevIm = initIm;
+                double prevRe = 0;
+                double prevIm = 0;
                 double nextRe, nextIm;
                 int p;
                 for (p = 0; p < MAX_ITERATION; p++) {
                     nextRe = prevRe * prevRe - prevIm * prevIm + re;
                     nextIm = 2 * prevRe * prevIm + im;
-                    if (nextRe * nextRe + nextIm * nextIm > 4) {
+                    if (nextRe * nextRe + nextIm * nextIm > 2) {
                         break;
                     }
                     prevRe = nextRe;
@@ -107,7 +107,7 @@ public class FractalView extends Group implements EventListener {
     public boolean handle(Event event) {
         if (event instanceof SettingsChangeEvent) {
             SettingsChangeEvent settings = (SettingsChangeEvent) event;
-            sprite = new Sprite(new Texture(updatePixelMap(settings.getInitRe(), settings.getInitIm())));
+            sprite = new Sprite(new Texture(updatePixelMap(settings.getInitNumber())));
             return true;
         }
         return false;

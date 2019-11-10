@@ -23,6 +23,6 @@ public class SettingsListener extends ClickListener {
     }
 
     private void updateSettings() {
-        settingsTable.fire(new SettingsChangeEvent(Double.parseDouble(initRe.getText()), Double.parseDouble(initIm.getText())));
+        settingsTable.fire(new SettingsChangeEvent(new ComplexNumber(Double.parseDouble(initRe.getText()), Double.parseDouble(initIm.getText()))));
     }
 }
