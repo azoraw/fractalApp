@@ -14,9 +14,10 @@ public class SettingsTable extends Table {
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 
         TextField textField = new TextField("textField", skin);
-        Button button2 = new TextButton("button2", skin);
+        Button button = new TextButton("button", skin);
+        button.addListener(new SettingsListener(textField, this));
         this.add(textField);
         this.row();
-        this.add(button2);
+        this.add(button);
     }
 }

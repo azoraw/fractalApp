@@ -5,10 +5,10 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class FractalView extends Actor {
+public class FractalView extends Group {
 
     private static final int MAX_ITERATION = 600;
     private final int FRACTAL_WIDTH;
@@ -28,6 +28,7 @@ public class FractalView extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         sprite.draw(batch);
+        this.drawChildren(batch, parentAlpha);
     }
 
 
