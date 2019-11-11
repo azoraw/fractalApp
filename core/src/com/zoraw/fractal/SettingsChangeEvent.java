@@ -4,23 +4,16 @@ import com.badlogic.gdx.scenes.scene2d.Event;
 
 public class SettingsChangeEvent extends Event {
 
-    private final ComplexNumber initNumber;
+    private final Settings settings;
 
-    public int getNumberOfIteration() {
-        return numberOfIteration;
+    public SettingsChangeEvent(Settings settings) {
+        this.settings = settings;
     }
 
-    private final int numberOfIteration;
-
-
-    public SettingsChangeEvent(ComplexNumber initNumber, int numberOfIteration) {
-        this.initNumber = initNumber;
-        this.numberOfIteration = numberOfIteration;
+    public Settings getSettings() {
+        return settings;
     }
 
-    public ComplexNumber getInitNumber() {
-        return initNumber;
-    }
 
 
 }

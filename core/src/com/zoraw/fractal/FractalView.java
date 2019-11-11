@@ -21,7 +21,8 @@ public class FractalView extends Group implements EventListener {
         this.addListener(this);
         this.FRACTAL_WIDTH = viewport.getScreenWidth();
         this.FRACTAL_HEIGHT = viewport.getScreenHeight();
-        sprite = new Sprite(new Texture(createPixelMap(new ComplexNumber(-0.7, 0.27015), 300)));
+        Settings initSettings = new Settings(new ComplexNumber(-0.7, 0.27015), 300, 1, 11, 13);
+        sprite = new Sprite(new Texture(createPixelMap(initSettings)));
         setBounds(sprite.getX(), sprite.getY(), FRACTAL_WIDTH, FRACTAL_HEIGHT);
         this.setWidth(FRACTAL_WIDTH);
         this.setHeight(FRACTAL_HEIGHT);
@@ -34,14 +35,14 @@ public class FractalView extends Group implements EventListener {
     }
 
 
-    private Pixmap createPixelMap(ComplexNumber complexNumber, int numberOfIteration) {
+    private Pixmap createPixelMap(Settings settings) {
         Pixmap pmap = new Pixmap(FRACTAL_WIDTH, FRACTAL_HEIGHT, Pixmap.Format.RGBA8888);
         pmap.setColor(Color.WHITE);
         pmap.fill();
         pmap.setBlending(Pixmap.Blending.None);
 
-        double cRe = complexNumber.getRe();
-        double cIm = complexNumber.getIm();
+        double cRe = settings.getInitNumber().getRe();
+        double cIm = settings.getInitNumber().getIm();
 
         double prevRe = 0;
         double prevIm = 0;
@@ -51,7 +52,7 @@ public class FractalView extends Group implements EventListener {
                 double nextRe = 1.5 * (x - (double) FRACTAL_WIDTH / 2) / (FRACTAL_WIDTH * 0.5);
                 double nextIm = (y - (double) FRACTAL_HEIGHT / 2) / (FRACTAL_HEIGHT * 0.5);
                 int p;
-                for (p = 0; p < numberOfIteration; p++) {
+                for (p = 0; p < settings.getNumberOfIteration(); p++) {
                     prevRe = nextRe;
                     prevIm = nextIm;
                     nextRe = prevRe * prevRe - prevIm * prevIm + cRe;
@@ -61,7 +62,7 @@ public class FractalView extends Group implements EventListener {
                     }
 
                 }
-                pmap.drawPixel(x, y, Color.toIntBits(p % 255, 255, 255, p == numberOfIteration ? 0 : 255));
+                pmap.drawPixel(x, y, Color.toIntBits(p * settings.getrMultiplier() % 255, p * settings.getgMultiplier() % 255, p * settings.getgMultiplier() % 255, p == settings.getNumberOfIteration() ? 0 : 255));
             }
         }
         return pmap;
@@ -70,8 +71,8 @@ public class FractalView extends Group implements EventListener {
     @Override
     public boolean handle(Event event) {
         if (event instanceof SettingsChangeEvent) {
-            SettingsChangeEvent settings = (SettingsChangeEvent) event;
-            sprite = new Sprite(new Texture(createPixelMap(settings.getInitNumber(), settings.getNumberOfIteration())));
+            SettingsChangeEvent settingsEvent = (SettingsChangeEvent) event;
+            sprite = new Sprite(new Texture(createPixelMap(settingsEvent.getSettings())));
             return true;
         }
         return false;

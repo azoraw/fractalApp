@@ -9,13 +9,19 @@ public class SettingsListener extends ClickListener {
     private final TextField initRe;
     private final TextField initIm;
     private final TextField numberOfIteration;
+    private final TextField r;
+    private final TextField g;
+    private final TextField b;
 
     private final SettingsTable settingsTable;
 
-    public SettingsListener(TextField initRe, TextField initIm, TextField numberOfIteration, SettingsTable settingsTable) {
+    public SettingsListener(TextField initRe, TextField initIm, TextField numberOfIteration, TextField r, TextField g, TextField b, SettingsTable settingsTable) {
         this.initRe = initRe;
         this.initIm = initIm;
         this.numberOfIteration = numberOfIteration;
+        this.r = r;
+        this.g = g;
+        this.b = b;
         this.settingsTable = settingsTable;
     }
 
@@ -25,6 +31,12 @@ public class SettingsListener extends ClickListener {
     }
 
     private void updateSettings() {
-        settingsTable.fire(new SettingsChangeEvent(new ComplexNumber(Double.parseDouble(initRe.getText()), Double.parseDouble(initIm.getText())), Integer.parseInt(numberOfIteration.getText())));
+        settingsTable.fire(new SettingsChangeEvent(new Settings(
+                new ComplexNumber(Double.parseDouble(initRe.getText()),
+                        Double.parseDouble(initIm.getText())),
+                Integer.parseInt(numberOfIteration.getText()),
+                Integer.parseInt(r.getText()),
+                Integer.parseInt(g.getText()),
+                Integer.parseInt(b.getText()))));
     }
 }
