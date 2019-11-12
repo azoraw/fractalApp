@@ -21,7 +21,7 @@ public class FractalView extends Group implements EventListener {
         this.addListener(this);
         this.FRACTAL_WIDTH = viewport.getScreenWidth();
         this.FRACTAL_HEIGHT = viewport.getScreenHeight();
-        Settings initSettings = new Settings(new ComplexNumber(-0.7, 0.27015), 300, 1, 11, 13);
+        Settings initSettings = new Settings(new ComplexNumber(-0.7, 0.27015), 300, 1, 1, 1);
         sprite = new Sprite(new Texture(createPixelMap(initSettings)));
         setBounds(sprite.getX(), sprite.getY(), FRACTAL_WIDTH, FRACTAL_HEIGHT);
         this.setWidth(FRACTAL_WIDTH);
