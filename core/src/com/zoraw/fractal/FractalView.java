@@ -62,7 +62,7 @@ public class FractalView extends Group implements EventListener {
                     }
 
                 }
-                pmap.drawPixel(x, y, Color.toIntBits(p * settings.getrMultiplier() % 255, p * settings.getgMultiplier() % 255, p * settings.getgMultiplier() % 255, p == settings.getNumberOfIteration() ? 0 : 255));
+                pmap.drawPixel(x, y, Color.toIntBits(p * settings.getRMultiplier() % 255, p * settings.getGMultiplier() % 255, p * settings.getBMultiplier() % 255, p == settings.getNumberOfIteration() ? 0 : 255));
             }
         }
         return pmap;

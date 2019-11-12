@@ -3,7 +3,9 @@ package com.zoraw.fractal;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import lombok.Builder;
 
+@Builder
 public class SettingsListener extends ClickListener {
 
     private final TextField initRe;
@@ -15,28 +17,20 @@ public class SettingsListener extends ClickListener {
 
     private final SettingsTable settingsTable;
 
-    public SettingsListener(TextField initRe, TextField initIm, TextField numberOfIteration, TextField r, TextField g, TextField b, SettingsTable settingsTable) {
-        this.initRe = initRe;
-        this.initIm = initIm;
-        this.numberOfIteration = numberOfIteration;
-        this.r = r;
-        this.g = g;
-        this.b = b;
-        this.settingsTable = settingsTable;
-    }
-
     @Override
     public void clicked(InputEvent event, float x, float y) {
         updateSettings();
     }
 
     private void updateSettings() {
-        settingsTable.fire(new SettingsChangeEvent(new Settings(
-                new ComplexNumber(Double.parseDouble(initRe.getText()),
-                        Double.parseDouble(initIm.getText())),
-                Integer.parseInt(numberOfIteration.getText()),
-                Integer.parseInt(r.getText()),
-                Integer.parseInt(g.getText()),
-                Integer.parseInt(b.getText()))));
+        settingsTable.fire(new SettingsChangeEvent(
+                Settings.builder()
+                        .initNumber(new ComplexNumber(Double.parseDouble(initRe.getText()),
+                                Double.parseDouble(initIm.getText())))
+                        .rMultiplier(Integer.parseInt(r.getText()))
+                        .gMultiplier(Integer.parseInt(g.getText()))
+                        .bMultiplier(Integer.parseInt(b.getText()))
+                        .numberOfIteration(Integer.parseInt(numberOfIteration.getText()))
+                        .build()));
     }
 }
