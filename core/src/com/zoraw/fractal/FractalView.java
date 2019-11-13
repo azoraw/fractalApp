@@ -19,13 +19,15 @@ public class FractalView extends Group implements EventListener {
 
     private final int FRACTAL_WIDTH;
     private final int FRACTAL_HEIGHT;
+    private FractalInputProcessor fractalExploration = new FractalInputProcessor();
     private Pixmap pixmap;
     private Settings settings;
+    private Sprite sprite;
 
-    Sprite sprite;
 
     public FractalView(ScreenViewport viewport) {
         this.addListener(this);
+
         this.FRACTAL_WIDTH = viewport.getScreenWidth();
         this.FRACTAL_HEIGHT = viewport.getScreenHeight();
         settings = new Settings(new ComplexNumber(-0.7, 0.27015), 300, 1, 1, 1);
@@ -45,7 +47,7 @@ public class FractalView extends Group implements EventListener {
 
     private Pixmap createPixelMap() {
         pixmap = new Pixmap(FRACTAL_WIDTH, FRACTAL_HEIGHT, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.WHITE);
+        pixmap.setColor(Color.BLACK);
         pixmap.fill();
         pixmap.setBlending(Pixmap.Blending.None);
 
@@ -54,11 +56,13 @@ public class FractalView extends Group implements EventListener {
 
         double prevRe = 0;
         double prevIm = 0;
+        int xOffset = fractalExploration.getXOffset();
+        int yOffset = fractalExploration.getYOffset();
 
         for (int x = 0; x < FRACTAL_WIDTH; x++) {
             for (int y = 0; y < FRACTAL_HEIGHT; y++) {
-                double nextRe = 1.5 * (x - (double) FRACTAL_WIDTH / 2) / (FRACTAL_WIDTH * 0.5);
-                double nextIm = (y - (double) FRACTAL_HEIGHT / 2) / (FRACTAL_HEIGHT * 0.5);
+                double nextRe = 1.5 * (x - xOffset - (double) FRACTAL_WIDTH / 2) / (FRACTAL_WIDTH * 0.5);
+                double nextIm = (y - yOffset - (double) FRACTAL_HEIGHT / 2) / (FRACTAL_HEIGHT * 0.5);
                 int p;
                 for (p = 0; p < settings.getNumberOfIteration(); p++) {
                     prevRe = nextRe;
