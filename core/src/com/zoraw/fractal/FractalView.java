@@ -17,9 +17,9 @@ import java.util.zip.Deflater;
 
 public class FractalView extends Group implements EventListener {
 
-    private final Pixmap pixmap;
     private final int FRACTAL_WIDTH;
     private final int FRACTAL_HEIGHT;
+    private Pixmap pixmap;
     private Settings settings;
 
     Sprite sprite;
@@ -44,10 +44,10 @@ public class FractalView extends Group implements EventListener {
 
 
     private Pixmap createPixelMap() {
-        Pixmap pmap = new Pixmap(FRACTAL_WIDTH, FRACTAL_HEIGHT, Pixmap.Format.RGBA8888);
-        pmap.setColor(Color.WHITE);
-        pmap.fill();
-        pmap.setBlending(Pixmap.Blending.None);
+        pixmap = new Pixmap(FRACTAL_WIDTH, FRACTAL_HEIGHT, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.WHITE);
+        pixmap.fill();
+        pixmap.setBlending(Pixmap.Blending.None);
 
         double cRe = settings.getComplexNumber().getRe();
         double cIm = settings.getComplexNumber().getIm();
@@ -77,10 +77,10 @@ public class FractalView extends Group implements EventListener {
                 if (p == 0) {
                     color = Color.rgba8888(Color.BLACK);
                 }
-                pmap.drawPixel(x, y, color);
+                pixmap.drawPixel(x, y, color);
             }
         }
-        return pmap;
+        return pixmap;
     }
 
     private float getRgbPart(Settings settings, int p, int multiplier) {
@@ -96,8 +96,8 @@ public class FractalView extends Group implements EventListener {
 
     private String getFileName() {
         return LocalDateTime.now().toString().replace(":", "_") +
-                "re"+ settings.getComplexNumber().getRe() +
-                "im"+ settings.getComplexNumber().getIm() +
+                "re" + settings.getComplexNumber().getRe() +
+                "im" + settings.getComplexNumber().getIm() +
                 "iteration" + settings.getNumberOfIteration() +
                 "r" + settings.getRMultiplier() +
                 "g" + settings.getGMultiplier() +
