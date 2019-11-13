@@ -1,7 +1,9 @@
 package com.zoraw.fractal;
 
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -10,8 +12,11 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import java.util.zip.Deflater;
+
 public class FractalView extends Group implements EventListener {
 
+    private final Pixmap pixmap;
     private final int FRACTAL_WIDTH;
     private final int FRACTAL_HEIGHT;
 
@@ -22,7 +27,8 @@ public class FractalView extends Group implements EventListener {
         this.FRACTAL_WIDTH = viewport.getScreenWidth();
         this.FRACTAL_HEIGHT = viewport.getScreenHeight();
         Settings initSettings = new Settings(new ComplexNumber(-0.7, 0.27015), 300, 1, 1, 1);
-        sprite = new Sprite(new Texture(createPixelMap(initSettings)));
+        pixmap = createPixelMap(initSettings);
+        sprite = new Sprite(new Texture(pixmap));
         setBounds(sprite.getX(), sprite.getY(), FRACTAL_WIDTH, FRACTAL_HEIGHT);
         this.setWidth(FRACTAL_WIDTH);
         this.setHeight(FRACTAL_HEIGHT);
@@ -62,17 +68,36 @@ public class FractalView extends Group implements EventListener {
                     }
 
                 }
-                pmap.drawPixel(x, y, Color.toIntBits(p * settings.getRMultiplier() % 255, p * settings.getGMultiplier() % 255, p * settings.getBMultiplier() % 255, p == settings.getNumberOfIteration() ? 0 : 255));
+                int color = Color.rgba8888(getRgbPart(settings, p, settings.getRMultiplier()),
+                        getRgbPart(settings, p, settings.getGMultiplier()),
+                        getRgbPart(settings, p, settings.getBMultiplier()),
+                        1);
+                if (p == 0) {
+                    color = Color.rgba8888(Color.BLACK);
+                }
+                pmap.drawPixel(x, y, color);
             }
         }
         return pmap;
+    }
+
+    private float getRgbPart(Settings settings, int p, int multiplier) {
+        float v = (float) (p * multiplier) / settings.getNumberOfIteration();
+        return v - (int) v;
+    }
+
+    public void saveToFile() {
+        pixmap.setFilter(Pixmap.Filter.NearestNeighbour);
+        pixmap.setColor(Color.BLACK);
+        PixmapIO.writePNG(new FileHandle("asdf.png"), pixmap, Deflater.NO_COMPRESSION, false);
     }
 
     @Override
     public boolean handle(Event event) {
         if (event instanceof SettingsChangeEvent) {
             SettingsChangeEvent settingsEvent = (SettingsChangeEvent) event;
-            sprite = new Sprite(new Texture(createPixelMap(settingsEvent.getSettings())));
+            Texture texture = new Texture(createPixelMap(settingsEvent.getSettings()));
+            sprite = new Sprite(texture);
             return true;
         }
         return false;
