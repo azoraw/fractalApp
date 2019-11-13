@@ -18,15 +18,17 @@ public class SettingsTable extends Table {
         Label rLabel = new Label("r: ", skin);
         Label gLabel = new Label("g: ", skin);
         Label bLabel = new Label("b: ", skin);
-        Label emptyLabel = new Label("", skin);
+
         TextField initRe = new TextField("-0.7", skin);
         TextField initIm = new TextField("0.27015", skin);
         TextField numberOfIteration = new TextField("300", skin);
         TextField rTextField = new TextField("1", skin);
         TextField gTextField = new TextField("1", skin);
         TextField bTextField = new TextField("1", skin);
-        Button button = new TextButton("generate", skin);
-        button.addListener(new SettingsListener(initRe, initIm, numberOfIteration, rTextField, gTextField, bTextField, this));
+        Button saveButton = new TextButton("save", skin);
+        saveButton.addListener(new SaveButtonListener(this));
+        Button generateButton = new TextButton("generate", skin);
+        generateButton.addListener(new SettingsListener(initRe, initIm, numberOfIteration, rTextField, gTextField, bTextField, this));
         this.add(re);
         this.add(initRe);
         this.row();
@@ -45,7 +47,7 @@ public class SettingsTable extends Table {
         this.add(bLabel);
         this.add(bTextField);
         this.row();
-        this.add(emptyLabel);
-        this.add(button);
+        this.add(saveButton);
+        this.add(generateButton);
     }
 }

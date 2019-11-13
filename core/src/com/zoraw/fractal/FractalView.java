@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import java.time.LocalDateTime;
 import java.util.zip.Deflater;
 
 public class FractalView extends Group implements EventListener {
@@ -19,6 +20,7 @@ public class FractalView extends Group implements EventListener {
     private final Pixmap pixmap;
     private final int FRACTAL_WIDTH;
     private final int FRACTAL_HEIGHT;
+    private Settings settings;
 
     Sprite sprite;
 
@@ -26,8 +28,8 @@ public class FractalView extends Group implements EventListener {
         this.addListener(this);
         this.FRACTAL_WIDTH = viewport.getScreenWidth();
         this.FRACTAL_HEIGHT = viewport.getScreenHeight();
-        Settings initSettings = new Settings(new ComplexNumber(-0.7, 0.27015), 300, 1, 1, 1);
-        pixmap = createPixelMap(initSettings);
+        settings = new Settings(new ComplexNumber(-0.7, 0.27015), 300, 1, 1, 1);
+        pixmap = createPixelMap();
         sprite = new Sprite(new Texture(pixmap));
         setBounds(sprite.getX(), sprite.getY(), FRACTAL_WIDTH, FRACTAL_HEIGHT);
         this.setWidth(FRACTAL_WIDTH);
@@ -41,14 +43,14 @@ public class FractalView extends Group implements EventListener {
     }
 
 
-    private Pixmap createPixelMap(Settings settings) {
+    private Pixmap createPixelMap() {
         Pixmap pmap = new Pixmap(FRACTAL_WIDTH, FRACTAL_HEIGHT, Pixmap.Format.RGBA8888);
         pmap.setColor(Color.WHITE);
         pmap.fill();
         pmap.setBlending(Pixmap.Blending.None);
 
-        double cRe = settings.getInitNumber().getRe();
-        double cIm = settings.getInitNumber().getIm();
+        double cRe = settings.getComplexNumber().getRe();
+        double cIm = settings.getComplexNumber().getIm();
 
         double prevRe = 0;
         double prevIm = 0;
@@ -89,15 +91,29 @@ public class FractalView extends Group implements EventListener {
     public void saveToFile() {
         pixmap.setFilter(Pixmap.Filter.NearestNeighbour);
         pixmap.setColor(Color.BLACK);
-        PixmapIO.writePNG(new FileHandle("asdf.png"), pixmap, Deflater.NO_COMPRESSION, false);
+        PixmapIO.writePNG(new FileHandle(getFileName()), pixmap, Deflater.NO_COMPRESSION, false);
+    }
+
+    private String getFileName() {
+        return LocalDateTime.now().toString().replace(":", "_") +
+                "re"+ settings.getComplexNumber().getRe() +
+                "im"+ settings.getComplexNumber().getIm() +
+                "iteration" + settings.getNumberOfIteration() +
+                "r" + settings.getRMultiplier() +
+                "g" + settings.getGMultiplier() +
+                "b" + settings.getBMultiplier() +
+                ".png";
     }
 
     @Override
     public boolean handle(Event event) {
         if (event instanceof SettingsChangeEvent) {
-            SettingsChangeEvent settingsEvent = (SettingsChangeEvent) event;
-            Texture texture = new Texture(createPixelMap(settingsEvent.getSettings()));
-            sprite = new Sprite(texture);
+            settings = ((SettingsChangeEvent) event).getSettings();
+            sprite = new Sprite(new Texture(createPixelMap()));
+            return true;
+        }
+        if (event instanceof SaveButtonEvent) {
+            saveToFile();
             return true;
         }
         return false;

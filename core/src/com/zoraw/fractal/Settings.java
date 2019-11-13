@@ -7,7 +7,7 @@ import lombok.Value;
 @Value
 public class Settings {
 
-    private final ComplexNumber initNumber;
+    private final ComplexNumber complexNumber;
     private final int numberOfIteration;
     private final int rMultiplier;
     private final int gMultiplier;

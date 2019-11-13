@@ -25,7 +25,7 @@ public class SettingsListener extends ClickListener {
     private void updateSettings() {
         settingsTable.fire(new SettingsChangeEvent(
                 Settings.builder()
-                        .initNumber(new ComplexNumber(Double.parseDouble(initRe.getText()),
+                        .complexNumber(new ComplexNumber(Double.parseDouble(initRe.getText()),
                                 Double.parseDouble(initIm.getText())))
                         .rMultiplier(Integer.parseInt(r.getText()))
                         .gMultiplier(Integer.parseInt(g.getText()))
