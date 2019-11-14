@@ -31,7 +31,7 @@ public class FractalInputProcessor implements InputProcessor {
                 break;
             default:
         }
-        return true;
+        return false;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class FractalInputProcessor implements InputProcessor {
         int x = screenX - this.initX;
         int y = screenY - this.initY;
         this.fractalView.move(x, y);
-        return true;
+        return false;
     }
 
     @Override
@@ -74,6 +74,6 @@ public class FractalInputProcessor implements InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         this.fractalView.zoom(amount);
-        return true;
+        return false;
     }
 }
