@@ -19,11 +19,10 @@ public class FractalView extends Group implements EventListener {
 
     private final int FRACTAL_WIDTH;
     private final int FRACTAL_HEIGHT;
-    private FractalInputProcessor fractalExploration = new FractalInputProcessor();
+    private final FractalExplorer fractalExplorer = new FractalExplorer();
     private Pixmap pixmap;
     private Settings settings;
     private Sprite sprite;
-
 
     public FractalView(ScreenViewport viewport) {
         this.addListener(this);
@@ -56,8 +55,8 @@ public class FractalView extends Group implements EventListener {
 
         double prevRe = 0;
         double prevIm = 0;
-        int xOffset = fractalExploration.getXOffset();
-        int yOffset = fractalExploration.getYOffset();
+        int xOffset = fractalExplorer.getXOffset();
+        int yOffset = fractalExplorer.getYOffset();
 
         for (int x = 0; x < FRACTAL_WIDTH; x++) {
             for (int y = 0; y < FRACTAL_HEIGHT; y++) {
@@ -121,5 +120,11 @@ public class FractalView extends Group implements EventListener {
             return true;
         }
         return false;
+    }
+
+    public void move(int x, int y) {
+        fractalExplorer.addOffset(x, y);
+        sprite = new Sprite(new Texture(createPixelMap()));
+
     }
 }

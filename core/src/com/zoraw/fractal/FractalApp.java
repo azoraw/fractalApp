@@ -2,21 +2,22 @@ package com.zoraw.fractal;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class FractalApp extends ApplicationAdapter {
 
-   private Stage stage;
+    private Stage stage;
 
     @Override
     public void create() {
         ScreenViewport viewport = new ScreenViewport();
         stage = new Stage(viewport);
-        Gdx.input.setInputProcessor(stage);
         FractalView fractalView = new FractalView(viewport);
         SettingsTable settingsTable = new SettingsTable(viewport);
+        Gdx.input.setInputProcessor(new InputMultiplexer(stage, new FractalInputProcessor(fractalView)));
         fractalView.addActor(settingsTable);
         stage.addActor(fractalView);
         stage.setKeyboardFocus(fractalView);
