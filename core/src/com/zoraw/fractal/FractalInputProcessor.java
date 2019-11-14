@@ -1,5 +1,6 @@
 package com.zoraw.fractal;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,22 @@ public class FractalInputProcessor implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        return false;
+        switch (keycode) {
+            case Input.Keys.LEFT:
+                this.fractalView.move(-50, 0);
+                break;
+            case Input.Keys.RIGHT:
+                this.fractalView.move(50, 0);
+                break;
+            case Input.Keys.UP:
+                this.fractalView.move(0, -50);
+                break;
+            case Input.Keys.DOWN:
+                this.fractalView.move(0, 50);
+                break;
+            default:
+        }
+        return true;
     }
 
     @Override
@@ -41,7 +57,7 @@ public class FractalInputProcessor implements InputProcessor {
         this.touched = false;
         int x = screenX - this.initX;
         int y = screenY - this.initY;
-        this.fractalView.move(x,y);
+        this.fractalView.move(x, y);
         return true;
     }
 
@@ -57,6 +73,8 @@ public class FractalInputProcessor implements InputProcessor {
 
     @Override
     public boolean scrolled(int amount) {
-        return false;
+        this.fractalView.zoom(amount);
+        System.out.println(amount);
+        return true;
     }
 }
