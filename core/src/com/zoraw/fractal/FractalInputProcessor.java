@@ -74,7 +74,6 @@ public class FractalInputProcessor implements InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         this.fractalView.zoom(amount);
-        System.out.println(amount);
         return true;
     }
 }

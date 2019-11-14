@@ -5,6 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import static com.zoraw.fractal.Settings.INITIAL_SETTINGS;
+
 public class SettingsTable extends Table {
 
     public SettingsTable(ScreenViewport viewport) {
@@ -14,17 +16,18 @@ public class SettingsTable extends Table {
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         Label re = new Label("re: ", skin);
         Label im = new Label("im: ", skin);
-        Label numberOfIterationLabel = new Label("no iteration: ", skin);
+        Label numberOfIterationLabel = new Label("no. iteration: ", skin);
         Label rLabel = new Label("r: ", skin);
         Label gLabel = new Label("g: ", skin);
         Label bLabel = new Label("b: ", skin);
+        Label emptyLabel = new Label("", skin);
 
-        TextField initRe = new TextField("-0.7", skin);
-        TextField initIm = new TextField("0.27015", skin);
-        TextField numberOfIteration = new TextField("300", skin);
-        TextField rTextField = new TextField("1", skin);
-        TextField gTextField = new TextField("1", skin);
-        TextField bTextField = new TextField("1", skin);
+        TextField initRe = new TextField(String.valueOf(INITIAL_SETTINGS.getComplexNumber().getRe()), skin);
+        TextField initIm = new TextField(String.valueOf(INITIAL_SETTINGS.getComplexNumber().getIm()), skin);
+        TextField numberOfIteration = new TextField(String.valueOf(INITIAL_SETTINGS.getNumberOfIteration()), skin);
+        TextField rTextField = new TextField(String.valueOf(INITIAL_SETTINGS.getRMultiplier()), skin);
+        TextField gTextField = new TextField(String.valueOf(INITIAL_SETTINGS.getGMultiplier()), skin);
+        TextField bTextField = new TextField(String.valueOf(INITIAL_SETTINGS.getBMultiplier()), skin);
         Button saveButton = new TextButton("save", skin);
         saveButton.addListener(new SaveButtonListener(this));
         Button generateButton = new TextButton("generate", skin);
@@ -47,7 +50,10 @@ public class SettingsTable extends Table {
         this.add(bLabel);
         this.add(bTextField);
         this.row();
+        this.add(emptyLabel);
         this.add(saveButton);
+        this.row();
+        this.add(emptyLabel);
         this.add(generateButton);
     }
 }

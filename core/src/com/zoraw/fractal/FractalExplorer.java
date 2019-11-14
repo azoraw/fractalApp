@@ -16,9 +16,9 @@ public class FractalExplorer {
 
     public void addZoom(int amount) {
         if (amount > 0) {
-            this.zoom *= 2;
-        } else {
             this.zoom /= 2;
+        } else {
+            this.zoom *= 2;
         }
 
     }
