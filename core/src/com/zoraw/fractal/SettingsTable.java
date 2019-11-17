@@ -9,6 +9,8 @@ import static com.zoraw.fractal.Settings.INITIAL_SETTINGS;
 
 public class SettingsTable extends Table {
 
+    private final SettingsEmitter settingsEmitter;
+
     public SettingsTable(ScreenViewport viewport) {
         this.setWidth(50);
         this.align(Align.right | Align.top);
@@ -37,16 +39,19 @@ public class SettingsTable extends Table {
         Button saveButton = new TextButton("save", skin);
         saveButton.addListener(new SaveButtonListener(this));
         Button generateButton = new TextButton("generate", skin);
-        generateButton.addListener(
-                SettingsEmitter.builder()
-                        .initRe(initRe)
-                        .initIm(initIm)
-                        .numberOfIteration(numberOfIteration)
-                        .r(rTextField)
-                        .g(gTextField)
-                        .b(bTextField)
-                        .settingsTable(this)
-                        .build());
+        settingsEmitter = SettingsEmitter.builder()
+                .re(initRe)
+                .im(initIm)
+                .numberOfIteration(numberOfIteration)
+                .r(rTextField)
+                .g(gTextField)
+                .b(bTextField)
+                .settingsTable(this)
+                .xOffset(xOffsetTextField)
+                .yOffset(yOffsetTextField)
+                .zoom(zoomTextField)
+                .build();
+        generateButton.addListener(settingsEmitter);
         this.add(re);
         this.add(initRe);
         this.row();
@@ -80,4 +85,9 @@ public class SettingsTable extends Table {
         this.add(emptyLabel);
         this.add(generateButton);
     }
+
+    public void updateTextFields(Settings settings) {
+        this.settingsEmitter.updateTextFields(settings);
+    }
+
 }

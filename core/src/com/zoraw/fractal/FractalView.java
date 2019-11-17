@@ -59,7 +59,7 @@ public class FractalView extends Group implements EventListener {
 
         for (int x = 0; x < FRACTAL_WIDTH; x++) {
             for (int y = 0; y < FRACTAL_HEIGHT; y++) {
-                double nextRe = 1.5 * ((x - xOffset) - (double) FRACTAL_WIDTH / 2) / (FRACTAL_WIDTH * 0.5 * zoom );
+                double nextRe = 1.5 * ((x - xOffset) - (double) FRACTAL_WIDTH / 2) / (FRACTAL_WIDTH * 0.5 * zoom);
                 double nextIm = (y - yOffset - (double) FRACTAL_HEIGHT / 2) / (FRACTAL_HEIGHT * 0.5 * zoom);
                 int p;
                 for (p = 0; p < settings.getNumberOfIteration(); p++) {
@@ -121,18 +121,22 @@ public class FractalView extends Group implements EventListener {
         return false;
     }
 
-    public void move(int x, int y) {
-        settings.addOffset(x, y);
-        updateFractal();
-
-    }
-
     private void updateFractal() {
         sprite = new Sprite(new Texture(createPixelMap()));
     }
 
+    public void move(int x, int y) {
+        settings.addOffset(x, y);
+        SettingsTable settingsTable = (SettingsTable) this.getChild(0);
+        settingsTable.updateTextFields(settings);
+        updateFractal();
+
+    }
+
     public void zoom(int amount) {
         this.settings.addZoom(amount);
+        SettingsTable settingsTable = (SettingsTable) this.getChild(0);
+        settingsTable.updateTextFields(settings);
         updateFractal();
     }
 }

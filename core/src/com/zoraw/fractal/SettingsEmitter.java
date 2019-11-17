@@ -8,8 +8,8 @@ import lombok.Builder;
 @Builder
 public class SettingsEmitter extends ClickListener {
 
-    private final TextField initRe;
-    private final TextField initIm;
+    private final TextField re;
+    private final TextField im;
     private final TextField numberOfIteration;
     private final TextField r;
     private final TextField g;
@@ -28,8 +28,8 @@ public class SettingsEmitter extends ClickListener {
     private void updateSettings() {
         settingsTable.fire(new SettingsChangeEvent(
                 Settings.builder()
-                        .complexNumber(new ComplexNumber(Double.parseDouble(initRe.getText()),
-                                Double.parseDouble(initIm.getText())))
+                        .complexNumber(new ComplexNumber(Double.parseDouble(re.getText()),
+                                Double.parseDouble(im.getText())))
                         .rMultiplier(Integer.parseInt(r.getText()))
                         .gMultiplier(Integer.parseInt(g.getText()))
                         .bMultiplier(Integer.parseInt(b.getText()))
@@ -38,5 +38,17 @@ public class SettingsEmitter extends ClickListener {
                         .yOffset(Integer.parseInt(yOffset.getText()))
                         .zoom(Double.parseDouble(zoom.getText()))
                         .build()));
+    }
+
+    public void updateTextFields(Settings settings) {
+            re.setText(String.valueOf(settings.getComplexNumber().getRe()));
+            im.setText(String.valueOf(settings.getComplexNumber().getIm()));
+            numberOfIteration.setText(String.valueOf(settings.getNumberOfIteration()));
+            r.setText(String.valueOf(settings.getRMultiplier()));
+            g.setText(String.valueOf(settings.getGMultiplier()));
+            b.setText(String.valueOf(settings.getBMultiplier()));
+            xOffset.setText(String.valueOf(settings.getXOffset()));
+            yOffset.setText(String.valueOf(settings.getYOffset()));
+            zoom.setText(String.valueOf(settings.getZoom()));
     }
 }
