@@ -126,13 +126,6 @@ public class FractalView extends Group implements EventListener {
         sprite = new Sprite(new Texture(createPixelMap()));
     }
 
-    public void move(double x, double y) {
-        settings.addOffset(x, y);
-        updateSettingTable();
-        updateFractal();
-
-    }
-
     public void zoom(int amount) {
         this.settings.addZoom(amount);
         updateSettingTable();
@@ -142,5 +135,12 @@ public class FractalView extends Group implements EventListener {
     private void updateSettingTable() {
         SettingsTable settingsTable = (SettingsTable) this.getChild(0);
         settingsTable.updateTextFields(settings);
+    }
+
+    public void move(Direction direction) {
+        settings.addOffset(direction);
+        updateSettingTable();
+        updateFractal();
+
     }
 }

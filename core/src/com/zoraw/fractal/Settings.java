@@ -28,16 +28,29 @@ public class Settings {
             .zoom(1)
             .build();
 
-    public void addOffset(double xOffset, double yOffset) {
-        this.xOffset += xOffset;
-        this.yOffset += yOffset;
-    }
-
     public void addZoom(int amount) {
         if (amount > 0) {
             this.zoom /= 2;
         } else {
             this.zoom *= 2;
+        }
+    }
+
+    public void addOffset(Direction direction) {
+        double offsetDelta = 0.2 / zoom;
+        switch (direction) {
+            case UP:
+                this.yOffset += offsetDelta;
+                break;
+            case DOWN:
+                this.yOffset -= offsetDelta;
+                break;
+            case LEFT:
+                xOffset += offsetDelta;
+                break;
+            case RIGHT:
+                xOffset -= offsetDelta;
+                break;
         }
     }
 }

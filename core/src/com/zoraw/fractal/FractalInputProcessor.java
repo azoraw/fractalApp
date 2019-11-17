@@ -17,16 +17,16 @@ public class FractalInputProcessor implements InputProcessor {
     public boolean keyDown(int keycode) {
         switch (keycode) {
             case Input.Keys.LEFT:
-                this.fractalView.move(0.05, 0);
+                this.fractalView.move(Direction.LEFT);
                 break;
             case Input.Keys.RIGHT:
-                this.fractalView.move(-0.05, 0);
+                this.fractalView.move(Direction.RIGHT);
                 break;
             case Input.Keys.UP:
-                this.fractalView.move(0, 0.05);
+                this.fractalView.move(Direction.UP);
                 break;
             case Input.Keys.DOWN:
-                this.fractalView.move(0, -0.05);
+                this.fractalView.move(Direction.DOWN);
                 break;
             default:
         }
