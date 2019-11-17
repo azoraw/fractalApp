@@ -47,6 +47,8 @@ public class FractalInputProcessor implements InputProcessor {
             this.fractalView.moveAndZoom(screenX, screenY, Zoom.IN);
         } else if (button == Input.Buttons.RIGHT) {
             this.fractalView.moveAndZoom(screenX, screenY, Zoom.OUT);
+        } else if(button == Input.Buttons.MIDDLE) {
+            this.fractalView.move(screenX, screenY);
         }
         return false;
     }

@@ -128,13 +128,14 @@ public class FractalView extends Group implements EventListener {
     }
 
     public void zoom(Zoom zoom) {
-        this.settings.addZoom(zoom);
+        this.settings.zoom(zoom);
         updateSettingTable();
         updateFractal();
     }
 
     public void moveAndZoom(int screenX, int screenY, Zoom zoom) {
-        this.settings.moveAndZoom(screenX, screenY, FRACTAL_WIDTH, FRACTAL_HEIGHT, zoom);
+        settings.move(screenX, screenY, FRACTAL_WIDTH, FRACTAL_HEIGHT);
+        settings.zoom(zoom);
         updateSettingTable();
         updateFractal();
     }
@@ -146,6 +147,12 @@ public class FractalView extends Group implements EventListener {
 
     public void move(Direction direction) {
         settings.addOffset(direction);
+        updateSettingTable();
+        updateFractal();
+    }
+
+    public void move(int screenX, int screenY) {
+        settings.move(screenX, screenY, FRACTAL_WIDTH, FRACTAL_HEIGHT);
         updateSettingTable();
         updateFractal();
     }

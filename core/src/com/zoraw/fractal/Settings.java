@@ -28,7 +28,7 @@ public class Settings {
             .zoom(1)
             .build();
 
-    public void addZoom(Zoom zoom) {
+    public void zoom(Zoom zoom) {
         if (zoom == Zoom.IN) {
             this.zoom *= 2;
         } else
@@ -54,11 +54,10 @@ public class Settings {
         }
     }
 
-    public void moveAndZoom(int screenX, int screenY, int FRACTAL_WIDTH, int FRACTAL_HEIGHT, Zoom zoom) {
-        double x = 1.5 * (((double) screenX * 2 / FRACTAL_WIDTH) - 1) / this.zoom;
-        double y = (((double) screenY * 2 / FRACTAL_HEIGHT) - 1) / this.zoom;
+    public void move(int screenX, int screenY, int fractalWidth, int fractalHeight) {
+        double x = 1.5 * (((double) screenX * 2 / fractalWidth) - 1) / this.zoom;
+        double y = (((double) screenY * 2 / fractalHeight) - 1) / this.zoom;
         xOffset -= x;
         yOffset -= y;
-        addZoom(zoom);
     }
 }
