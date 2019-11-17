@@ -40,9 +40,8 @@ public class SettingsEmitter extends ClickListener {
                             .zoom(Double.parseDouble(zoom.getText()))
                             .build()));
         } catch (NumberFormatException ex) {
-            //todo
+            System.out.println(ex.getMessage());
         }
-
     }
 
     public void updateTextFields(Settings settings) {
