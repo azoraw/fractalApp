@@ -60,8 +60,6 @@ public class FractalView extends Group implements EventListener {
             for (int y = 0; y < FRACTAL_HEIGHT; y++) {
                 double nextRe =  1.5 * (x - (double) FRACTAL_WIDTH / 2) / (FRACTAL_WIDTH * 0.5 * zoom) - xOffset ;
                 double nextIm = (y - (double) FRACTAL_HEIGHT / 2) / (FRACTAL_HEIGHT * 0.5 * zoom) - yOffset ;
-                if (x == 0 && y == 0)
-                    System.out.println(nextRe);
                 int p;
                 for (p = 0; p < settings.getNumberOfIteration(); p++) {
                     prevRe = nextRe;
