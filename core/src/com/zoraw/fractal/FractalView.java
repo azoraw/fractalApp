@@ -19,20 +19,17 @@ public class FractalView extends Group implements EventListener {
 
     private final int FRACTAL_WIDTH;
     private final int FRACTAL_HEIGHT;
-    private FractalInputProcessor fractalExploration = new FractalInputProcessor();
     private Pixmap pixmap;
     private Settings settings;
     private Sprite sprite;
 
-
     public FractalView(ScreenViewport viewport) {
         this.addListener(this);
-
         this.FRACTAL_WIDTH = viewport.getScreenWidth();
         this.FRACTAL_HEIGHT = viewport.getScreenHeight();
-        settings = new Settings(new ComplexNumber(-0.7, 0.27015), 300, 1, 1, 1);
+        settings = Settings.INITIAL_SETTINGS;
         pixmap = createPixelMap();
-        sprite = new Sprite(new Texture(pixmap));
+        updateFractal();
         setBounds(sprite.getX(), sprite.getY(), FRACTAL_WIDTH, FRACTAL_HEIGHT);
         this.setWidth(FRACTAL_WIDTH);
         this.setHeight(FRACTAL_HEIGHT);
@@ -43,7 +40,6 @@ public class FractalView extends Group implements EventListener {
         sprite.draw(batch);
         this.drawChildren(batch, parentAlpha);
     }
-
 
     private Pixmap createPixelMap() {
         pixmap = new Pixmap(FRACTAL_WIDTH, FRACTAL_HEIGHT, Pixmap.Format.RGBA8888);
@@ -56,13 +52,14 @@ public class FractalView extends Group implements EventListener {
 
         double prevRe = 0;
         double prevIm = 0;
-        int xOffset = fractalExploration.getXOffset();
-        int yOffset = fractalExploration.getYOffset();
+        double xOffset = settings.getXOffset();
+        double yOffset = settings.getYOffset();
+        double zoom = settings.getZoom();
 
         for (int x = 0; x < FRACTAL_WIDTH; x++) {
             for (int y = 0; y < FRACTAL_HEIGHT; y++) {
-                double nextRe = 1.5 * (x - xOffset - (double) FRACTAL_WIDTH / 2) / (FRACTAL_WIDTH * 0.5);
-                double nextIm = (y - yOffset - (double) FRACTAL_HEIGHT / 2) / (FRACTAL_HEIGHT * 0.5);
+                double nextRe =  1.5 * (x - (double) FRACTAL_WIDTH / 2) / (FRACTAL_WIDTH * 0.5 * zoom) - xOffset ;
+                double nextIm = (y - (double) FRACTAL_HEIGHT / 2) / (FRACTAL_HEIGHT * 0.5 * zoom) - yOffset ;
                 int p;
                 for (p = 0; p < settings.getNumberOfIteration(); p++) {
                     prevRe = nextRe;
@@ -84,6 +81,9 @@ public class FractalView extends Group implements EventListener {
                 pixmap.drawPixel(x, y, color);
             }
         }
+        pixmap.setColor(Color.RED);
+        pixmap.drawCircle(FRACTAL_WIDTH/2,FRACTAL_HEIGHT/2,50);
+        pixmap.drawCircle(FRACTAL_WIDTH/2,FRACTAL_HEIGHT/2,5);
         return pixmap;
     }
 
@@ -113,7 +113,7 @@ public class FractalView extends Group implements EventListener {
     public boolean handle(Event event) {
         if (event instanceof SettingsChangeEvent) {
             settings = ((SettingsChangeEvent) event).getSettings();
-            sprite = new Sprite(new Texture(createPixelMap()));
+            updateFractal();
             return true;
         }
         if (event instanceof SaveButtonEvent) {
@@ -121,5 +121,32 @@ public class FractalView extends Group implements EventListener {
             return true;
         }
         return false;
+    }
+
+    private void updateFractal() {
+        sprite = new Sprite(new Texture(createPixelMap()));
+    }
+
+    public void zoom(Zoom zoom) {
+        this.settings.addZoom(zoom);
+        updateSettingTable();
+        updateFractal();
+    }
+
+    public void moveAndZoom(int screenX, int screenY) {
+        this.settings.moveAndZoom(screenX, screenY, FRACTAL_WIDTH, FRACTAL_HEIGHT);
+        updateSettingTable();
+        updateFractal();
+    }
+
+    private void updateSettingTable() {
+        SettingsTable settingsTable = (SettingsTable) this.getChild(0);
+        settingsTable.updateTextFields(settings);
+    }
+
+    public void move(Direction direction) {
+        settings.addOffset(direction);
+        updateSettingTable();
+        updateFractal();
     }
 }
