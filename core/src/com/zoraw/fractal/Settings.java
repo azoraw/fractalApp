@@ -28,22 +28,22 @@ public class Settings {
             .zoom(1)
             .build();
 
-    public void addZoom(int amount) {
-        if (amount > 0) {
-            this.zoom /= 2;
-        } else {
+    public void addZoom(Zoom zoom) {
+        if (zoom == Zoom.IN) {
             this.zoom *= 2;
-        }
+        } else
+            this.zoom /= 2;
     }
+
 
     public void addOffset(Direction direction) {
         double offsetDelta = 0.2 / zoom;
         switch (direction) {
             case UP:
-                this.yOffset += offsetDelta;
+                yOffset += offsetDelta;
                 break;
             case DOWN:
-                this.yOffset -= offsetDelta;
+                yOffset -= offsetDelta;
                 break;
             case LEFT:
                 xOffset += offsetDelta;
@@ -52,5 +52,13 @@ public class Settings {
                 xOffset -= offsetDelta;
                 break;
         }
+    }
+
+    public void moveAndZoom(int screenX, int screenY, int FRACTAL_WIDTH, int FRACTAL_HEIGHT) {
+        double x = 1.5 * (((double) screenX * 2 / FRACTAL_WIDTH) - 1) / zoom;
+        double y = (((double) screenY * 2 / FRACTAL_HEIGHT) - 1) / zoom;
+        xOffset -= x;
+        yOffset -= y;
+        addZoom(Zoom.IN);
     }
 }

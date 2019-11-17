@@ -81,6 +81,9 @@ public class FractalView extends Group implements EventListener {
                 pixmap.drawPixel(x, y, color);
             }
         }
+        pixmap.setColor(Color.RED);
+        pixmap.drawCircle(FRACTAL_WIDTH/2,FRACTAL_HEIGHT/2,50);
+        pixmap.drawCircle(FRACTAL_WIDTH/2,FRACTAL_HEIGHT/2,5);
         return pixmap;
     }
 
@@ -124,8 +127,14 @@ public class FractalView extends Group implements EventListener {
         sprite = new Sprite(new Texture(createPixelMap()));
     }
 
-    public void zoom(int amount) {
-        this.settings.addZoom(amount);
+    public void zoom(Zoom zoom) {
+        this.settings.addZoom(zoom);
+        updateSettingTable();
+        updateFractal();
+    }
+
+    public void moveAndZoom(int screenX, int screenY) {
+        this.settings.moveAndZoom(screenX, screenY, FRACTAL_WIDTH, FRACTAL_HEIGHT);
         updateSettingTable();
         updateFractal();
     }
@@ -139,6 +148,5 @@ public class FractalView extends Group implements EventListener {
         settings.addOffset(direction);
         updateSettingTable();
         updateFractal();
-
     }
 }

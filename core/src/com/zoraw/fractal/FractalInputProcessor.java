@@ -10,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 public class FractalInputProcessor implements InputProcessor {
 
     private final FractalView fractalView;
-    private int initX;
-    private int initY;
 
     @Override
     public boolean keyDown(int keycode) {
@@ -45,6 +43,7 @@ public class FractalInputProcessor implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        this.fractalView.moveAndZoom(screenX, screenY);
         return false;
     }
 
@@ -65,7 +64,7 @@ public class FractalInputProcessor implements InputProcessor {
 
     @Override
     public boolean scrolled(int amount) {
-        this.fractalView.zoom(amount);
+        this.fractalView.zoom(amount < 0 ? Zoom.IN : Zoom.OUT);
         return false;
     }
 }
