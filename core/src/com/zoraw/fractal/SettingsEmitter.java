@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import lombok.Builder;
 
 @Builder
-public class SettingsListener extends ClickListener {
+public class SettingsEmitter extends ClickListener {
 
     private final TextField initRe;
     private final TextField initIm;
@@ -14,6 +14,9 @@ public class SettingsListener extends ClickListener {
     private final TextField r;
     private final TextField g;
     private final TextField b;
+    private final TextField xOffset;
+    private final TextField yOffset;
+    private final TextField zoom;
 
     private final SettingsTable settingsTable;
 
@@ -31,6 +34,9 @@ public class SettingsListener extends ClickListener {
                         .gMultiplier(Integer.parseInt(g.getText()))
                         .bMultiplier(Integer.parseInt(b.getText()))
                         .numberOfIteration(Integer.parseInt(numberOfIteration.getText()))
+                        .xOffset(Integer.parseInt(xOffset.getText()))
+                        .yOffset(Integer.parseInt(yOffset.getText()))
+                        .zoom(Double.parseDouble(zoom.getText()))
                         .build()));
     }
 }

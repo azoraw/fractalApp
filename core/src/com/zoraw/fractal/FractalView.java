@@ -19,7 +19,6 @@ public class FractalView extends Group implements EventListener {
 
     private final int FRACTAL_WIDTH;
     private final int FRACTAL_HEIGHT;
-    private final FractalExplorer fractalExplorer = new FractalExplorer();
     private Pixmap pixmap;
     private Settings settings;
     private Sprite sprite;
@@ -54,9 +53,9 @@ public class FractalView extends Group implements EventListener {
 
         double prevRe = 0;
         double prevIm = 0;
-        int xOffset = fractalExplorer.getXOffset();
-        int yOffset = fractalExplorer.getYOffset();
-        double zoom = fractalExplorer.getZoom();
+        int xOffset = settings.getXOffset();
+        int yOffset = settings.getYOffset();
+        double zoom = settings.getZoom();
 
         for (int x = 0; x < FRACTAL_WIDTH; x++) {
             for (int y = 0; y < FRACTAL_HEIGHT; y++) {
@@ -123,7 +122,7 @@ public class FractalView extends Group implements EventListener {
     }
 
     public void move(int x, int y) {
-        fractalExplorer.addOffset(x, y);
+        settings.addOffset(x, y);
         updateFractal();
 
     }
@@ -133,7 +132,7 @@ public class FractalView extends Group implements EventListener {
     }
 
     public void zoom(int amount) {
-        this.fractalExplorer.addZoom(amount);
+        this.settings.addZoom(amount);
         updateFractal();
     }
 }

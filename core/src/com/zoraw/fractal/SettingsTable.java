@@ -20,6 +20,9 @@ public class SettingsTable extends Table {
         Label rLabel = new Label("r: ", skin);
         Label gLabel = new Label("g: ", skin);
         Label bLabel = new Label("b: ", skin);
+        Label xOffsetLabel = new Label("x offset: ", skin);
+        Label yOffsetLabel = new Label("y offset: ", skin);
+        Label zoomLabel = new Label("zoom: ", skin);
         Label emptyLabel = new Label("", skin);
 
         TextField initRe = new TextField(String.valueOf(INITIAL_SETTINGS.getComplexNumber().getRe()), skin);
@@ -28,10 +31,22 @@ public class SettingsTable extends Table {
         TextField rTextField = new TextField(String.valueOf(INITIAL_SETTINGS.getRMultiplier()), skin);
         TextField gTextField = new TextField(String.valueOf(INITIAL_SETTINGS.getGMultiplier()), skin);
         TextField bTextField = new TextField(String.valueOf(INITIAL_SETTINGS.getBMultiplier()), skin);
+        TextField xOffsetTextField = new TextField(String.valueOf(INITIAL_SETTINGS.getXOffset()), skin);
+        TextField yOffsetTextField = new TextField(String.valueOf(INITIAL_SETTINGS.getYOffset()), skin);
+        TextField zoomTextField = new TextField(String.valueOf(INITIAL_SETTINGS.getZoom()), skin);
         Button saveButton = new TextButton("save", skin);
         saveButton.addListener(new SaveButtonListener(this));
         Button generateButton = new TextButton("generate", skin);
-        generateButton.addListener(new SettingsListener(initRe, initIm, numberOfIteration, rTextField, gTextField, bTextField, this));
+        generateButton.addListener(
+                SettingsEmitter.builder()
+                        .initRe(initRe)
+                        .initIm(initIm)
+                        .numberOfIteration(numberOfIteration)
+                        .r(rTextField)
+                        .g(gTextField)
+                        .b(bTextField)
+                        .settingsTable(this)
+                        .build());
         this.add(re);
         this.add(initRe);
         this.row();
@@ -49,6 +64,15 @@ public class SettingsTable extends Table {
         this.row();
         this.add(bLabel);
         this.add(bTextField);
+        this.row();
+        this.add(xOffsetLabel);
+        this.add(xOffsetTextField);
+        this.row();
+        this.add(yOffsetLabel);
+        this.add(yOffsetTextField);
+        this.row();
+        this.add(zoomLabel);
+        this.add(zoomTextField);
         this.row();
         this.add(emptyLabel);
         this.add(saveButton);
