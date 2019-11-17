@@ -133,8 +133,8 @@ public class FractalView extends Group implements EventListener {
         updateFractal();
     }
 
-    public void moveAndZoom(int screenX, int screenY) {
-        this.settings.moveAndZoom(screenX, screenY, FRACTAL_WIDTH, FRACTAL_HEIGHT);
+    public void moveAndZoom(int screenX, int screenY, Zoom zoom) {
+        this.settings.moveAndZoom(screenX, screenY, FRACTAL_WIDTH, FRACTAL_HEIGHT, zoom);
         updateSettingTable();
         updateFractal();
     }

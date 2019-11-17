@@ -54,11 +54,11 @@ public class Settings {
         }
     }
 
-    public void moveAndZoom(int screenX, int screenY, int FRACTAL_WIDTH, int FRACTAL_HEIGHT) {
-        double x = 1.5 * (((double) screenX * 2 / FRACTAL_WIDTH) - 1) / zoom;
-        double y = (((double) screenY * 2 / FRACTAL_HEIGHT) - 1) / zoom;
+    public void moveAndZoom(int screenX, int screenY, int FRACTAL_WIDTH, int FRACTAL_HEIGHT, Zoom zoom) {
+        double x = 1.5 * (((double) screenX * 2 / FRACTAL_WIDTH) - 1) / this.zoom;
+        double y = (((double) screenY * 2 / FRACTAL_HEIGHT) - 1) / this.zoom;
         xOffset -= x;
         yOffset -= y;
-        addZoom(Zoom.IN);
+        addZoom(zoom);
     }
 }

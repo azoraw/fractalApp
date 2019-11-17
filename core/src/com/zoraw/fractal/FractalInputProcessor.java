@@ -43,7 +43,11 @@ public class FractalInputProcessor implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        this.fractalView.moveAndZoom(screenX, screenY);
+        if (button == Input.Buttons.LEFT) {
+            this.fractalView.moveAndZoom(screenX, screenY, Zoom.IN);
+        } else if (button == Input.Buttons.RIGHT) {
+            this.fractalView.moveAndZoom(screenX, screenY, Zoom.OUT);
+        }
         return false;
     }
 
