@@ -13,22 +13,22 @@ public class Settings {
     private final int gMultiplier;
     private final int bMultiplier;
 
-    private int xOffset;
-    private int yOffset;
+    private double xOffset;
+    private double yOffset;
     private double zoom;
 
     public static final Settings INITIAL_SETTINGS = Settings.builder()
             .complexNumber(new ComplexNumber(-0.7, 0.27015))
-            .numberOfIteration(300)
-            .rMultiplier(1)
+            .numberOfIteration(3000)
+            .rMultiplier(0)
             .gMultiplier(1)
-            .bMultiplier(1)
+            .bMultiplier(13)
             .xOffset(0)
             .yOffset(0)
             .zoom(1)
             .build();
 
-    public void addOffset(int xOffset, int yOffset) {
+    public void addOffset(double xOffset, double yOffset) {
         this.xOffset += xOffset;
         this.yOffset += yOffset;
     }

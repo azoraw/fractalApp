@@ -41,7 +41,6 @@ public class FractalView extends Group implements EventListener {
         this.drawChildren(batch, parentAlpha);
     }
 
-
     private Pixmap createPixelMap() {
         pixmap = new Pixmap(FRACTAL_WIDTH, FRACTAL_HEIGHT, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.BLACK);
@@ -53,14 +52,16 @@ public class FractalView extends Group implements EventListener {
 
         double prevRe = 0;
         double prevIm = 0;
-        int xOffset = settings.getXOffset();
-        int yOffset = settings.getYOffset();
+        double xOffset = settings.getXOffset();
+        double yOffset = settings.getYOffset();
         double zoom = settings.getZoom();
 
         for (int x = 0; x < FRACTAL_WIDTH; x++) {
             for (int y = 0; y < FRACTAL_HEIGHT; y++) {
-                double nextRe = 1.5 * ((x - xOffset) - (double) FRACTAL_WIDTH / 2) / (FRACTAL_WIDTH * 0.5 * zoom);
-                double nextIm = (y - yOffset - (double) FRACTAL_HEIGHT / 2) / (FRACTAL_HEIGHT * 0.5 * zoom);
+                double nextRe =  1.5 * (x - (double) FRACTAL_WIDTH / 2) / (FRACTAL_WIDTH * 0.5 * zoom) - xOffset ;
+                double nextIm = (y - (double) FRACTAL_HEIGHT / 2) / (FRACTAL_HEIGHT * 0.5 * zoom) - yOffset ;
+                if (x == 0 && y == 0)
+                    System.out.println(nextRe);
                 int p;
                 for (p = 0; p < settings.getNumberOfIteration(); p++) {
                     prevRe = nextRe;
@@ -125,18 +126,21 @@ public class FractalView extends Group implements EventListener {
         sprite = new Sprite(new Texture(createPixelMap()));
     }
 
-    public void move(int x, int y) {
+    public void move(double x, double y) {
         settings.addOffset(x, y);
-        SettingsTable settingsTable = (SettingsTable) this.getChild(0);
-        settingsTable.updateTextFields(settings);
+        updateSettingTable();
         updateFractal();
 
     }
 
     public void zoom(int amount) {
         this.settings.addZoom(amount);
+        updateSettingTable();
+        updateFractal();
+    }
+
+    private void updateSettingTable() {
         SettingsTable settingsTable = (SettingsTable) this.getChild(0);
         settingsTable.updateTextFields(settings);
-        updateFractal();
     }
 }

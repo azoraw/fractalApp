@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 public class FractalInputProcessor implements InputProcessor {
 
     private final FractalView fractalView;
-    private boolean touched = false;
     private int initX;
     private int initY;
 
@@ -18,16 +17,16 @@ public class FractalInputProcessor implements InputProcessor {
     public boolean keyDown(int keycode) {
         switch (keycode) {
             case Input.Keys.LEFT:
-                this.fractalView.move(-50, 0);
+                this.fractalView.move(0.05, 0);
                 break;
             case Input.Keys.RIGHT:
-                this.fractalView.move(50, 0);
+                this.fractalView.move(-0.05, 0);
                 break;
             case Input.Keys.UP:
-                this.fractalView.move(0, -50);
+                this.fractalView.move(0, 0.05);
                 break;
             case Input.Keys.DOWN:
-                this.fractalView.move(0, 50);
+                this.fractalView.move(0, -0.05);
                 break;
             default:
         }
@@ -46,18 +45,11 @@ public class FractalInputProcessor implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        this.touched = true;
-        this.initX = screenX;
-        this.initY = screenY;
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        this.touched = false;
-        int x = screenX - this.initX;
-        int y = screenY - this.initY;
-        this.fractalView.move(x, y);
         return false;
     }
 

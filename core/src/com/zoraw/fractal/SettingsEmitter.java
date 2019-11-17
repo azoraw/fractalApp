@@ -26,18 +26,23 @@ public class SettingsEmitter extends ClickListener {
     }
 
     private void updateSettings() {
-        settingsTable.fire(new SettingsChangeEvent(
-                Settings.builder()
-                        .complexNumber(new ComplexNumber(Double.parseDouble(re.getText()),
-                                Double.parseDouble(im.getText())))
-                        .rMultiplier(Integer.parseInt(r.getText()))
-                        .gMultiplier(Integer.parseInt(g.getText()))
-                        .bMultiplier(Integer.parseInt(b.getText()))
-                        .numberOfIteration(Integer.parseInt(numberOfIteration.getText()))
-                        .xOffset(Integer.parseInt(xOffset.getText()))
-                        .yOffset(Integer.parseInt(yOffset.getText()))
-                        .zoom(Double.parseDouble(zoom.getText()))
-                        .build()));
+        try {
+            settingsTable.fire(new SettingsChangeEvent(
+                    Settings.builder()
+                            .complexNumber(new ComplexNumber(Double.parseDouble(re.getText()),
+                                    Double.parseDouble(im.getText())))
+                            .rMultiplier(Integer.parseInt(r.getText()))
+                            .gMultiplier(Integer.parseInt(g.getText()))
+                            .bMultiplier(Integer.parseInt(b.getText()))
+                            .numberOfIteration(Integer.parseInt(numberOfIteration.getText()))
+                            .xOffset(Double.parseDouble(xOffset.getText()))
+                            .yOffset(Double.parseDouble(yOffset.getText()))
+                            .zoom(Double.parseDouble(zoom.getText()))
+                            .build()));
+        } catch (NumberFormatException ex) {
+            //todo
+        }
+
     }
 
     public void updateTextFields(Settings settings) {
