@@ -1,5 +1,6 @@
 package com.zoraw.fractal;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -22,6 +23,7 @@ public class FractalView extends Group implements EventListener {
     private Pixmap pixmap;
     private Settings settings;
     private Sprite sprite;
+    private ProgressBar progressBar = new ProgressBar();
 
     public FractalView(ScreenViewport viewport) {
         this.addListener(this);
@@ -29,7 +31,7 @@ public class FractalView extends Group implements EventListener {
         this.FRACTAL_HEIGHT = viewport.getScreenHeight();
         settings = Settings.getInitialSettings(FRACTAL_WIDTH, FRACTAL_HEIGHT);
         updatePixMap();
-        updateFractal();
+        sprite = new Sprite(new Texture(pixmap));
         setBounds(sprite.getX(), sprite.getY(), FRACTAL_WIDTH, FRACTAL_HEIGHT);
         this.setWidth(FRACTAL_WIDTH);
         this.setHeight(FRACTAL_HEIGHT);
@@ -37,11 +39,13 @@ public class FractalView extends Group implements EventListener {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        System.out.println(progressBar.getProgress());
         sprite.draw(batch);
         this.drawChildren(batch, parentAlpha);
     }
 
     private void updatePixMap() {
+        progressBar.getVisible().getAndSet(true);
         Settings tmpSettings = settings.copy();
         Pixmap tmpPixmap = new Pixmap(tmpSettings.getWidth(), tmpSettings.getHeight(), Pixmap.Format.RGBA8888);
         tmpPixmap.setColor(Color.BLACK);
@@ -56,9 +60,10 @@ public class FractalView extends Group implements EventListener {
         double xOffset = settings.getXOffset();
         double yOffset = settings.getYOffset();
         double zoom = settings.getZoom();
-
+        float percent = tmpSettings.getWidth() * tmpSettings.getHeight();
         for (int x = 0; x < tmpSettings.getWidth(); x++) {
             for (int y = 0; y < tmpSettings.getHeight(); y++) {
+                progressBar.setProgress((x * tmpSettings.getHeight() + y) / percent);
                 double nextRe = 1.5 * (x - (double) tmpSettings.getWidth() / 2) / (tmpSettings.getWidth() * 0.5 * zoom) - xOffset;
                 double nextIm = (y - (double) tmpSettings.getHeight() / 2) / (tmpSettings.getHeight() * 0.5 * zoom) - yOffset;
                 int p;
@@ -83,6 +88,7 @@ public class FractalView extends Group implements EventListener {
             }
         }
         drawDebugCircle(tmpPixmap);
+        progressBar.getVisible().getAndSet(false);
         this.pixmap = tmpPixmap;
     }
 
@@ -129,8 +135,10 @@ public class FractalView extends Group implements EventListener {
     }
 
     private void updateFractal() {
-        updatePixMap();
-        sprite = new Sprite(new Texture(pixmap));
+        new Thread(() -> {
+            updatePixMap();
+            Gdx.app.postRunnable(() -> sprite = new Sprite(new Texture(pixmap)));
+        }).start();
     }
 
     public void zoom(Zoom zoom) {
