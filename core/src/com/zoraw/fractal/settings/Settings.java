@@ -1,4 +1,4 @@
-package com.zoraw.fractal;
+package com.zoraw.fractal.settings;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -85,6 +85,8 @@ public class Settings {
             case RIGHT:
                 complexNumber = this.complexNumber.move(moveDelta, 0);
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + direction);
         }
     }
 }

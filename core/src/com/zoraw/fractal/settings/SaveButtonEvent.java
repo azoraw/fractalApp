@@ -1,7 +1,6 @@
-package com.zoraw.fractal;
+package com.zoraw.fractal.settings;
 
 import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Value;

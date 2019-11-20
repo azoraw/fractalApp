@@ -2,6 +2,8 @@ package com.zoraw.fractal;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.zoraw.fractal.settings.Direction;
+import com.zoraw.fractal.settings.Zoom;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

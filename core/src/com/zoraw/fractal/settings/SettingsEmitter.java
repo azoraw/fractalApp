@@ -1,4 +1,4 @@
-package com.zoraw.fractal;
+package com.zoraw.fractal.settings;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;

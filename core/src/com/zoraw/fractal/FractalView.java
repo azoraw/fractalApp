@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.zoraw.fractal.settings.*;
 
 import java.time.LocalDateTime;
 import java.util.zip.Deflater;
