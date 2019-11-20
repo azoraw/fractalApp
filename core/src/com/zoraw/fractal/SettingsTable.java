@@ -30,7 +30,7 @@ public class SettingsTable extends Table {
         Label zoomMultiplierLabel = new Label("zoom multiplier: ", skin);
         Label emptyLabel = new Label("", skin);
 
-        Settings initSettings = Settings.getInitialSettings(viewport.getScreenWidth(), viewport.getScreenHeight());
+        Settings initSettings = Settings.getInitialSettings();
         TextField initRe = new TextField(String.valueOf(initSettings.getComplexNumber().getRe()), skin);
         TextField initIm = new TextField(String.valueOf(initSettings.getComplexNumber().getIm()), skin);
         TextField moveDeltaTextField = new TextField(String.valueOf(initSettings.getMoveDelta()), skin);
@@ -38,15 +38,15 @@ public class SettingsTable extends Table {
         TextField rTextField = new TextField(String.valueOf(initSettings.getRMultiplier()), skin);
         TextField gTextField = new TextField(String.valueOf(initSettings.getGMultiplier()), skin);
         TextField bTextField = new TextField(String.valueOf(initSettings.getBMultiplier()), skin);
-        TextField widthTextField = new TextField(String.valueOf(initSettings.getWidth()), skin);
-        TextField heightTextField = new TextField(String.valueOf(initSettings.getHeight()), skin);
+        TextField widthTextField = new TextField(String.valueOf(viewport.getScreenWidth()), skin);
+        TextField heightTextField = new TextField(String.valueOf(viewport.getScreenHeight()), skin);
 
         TextField xOffsetTextField = new TextField(String.valueOf(initSettings.getXOffset()), skin);
         TextField yOffsetTextField = new TextField(String.valueOf(initSettings.getYOffset()), skin);
         TextField zoomTextField = new TextField(String.valueOf(initSettings.getZoom()), skin);
         TextField zoomMultiplierTextField = new TextField(String.valueOf(initSettings.getZoomMultiplier()), skin);
         Button saveButton = new TextButton("save to png", skin);
-        saveButton.addListener(new SaveButtonListener(this));
+        saveButton.addListener(new SaveButtonListener(this, widthTextField, heightTextField));
         Button generateButton = new TextButton("save settings", skin);
         settingsEmitter = SettingsEmitter.builder()
                 .re(initRe)
@@ -56,8 +56,6 @@ public class SettingsTable extends Table {
                 .r(rTextField)
                 .g(gTextField)
                 .b(bTextField)
-                .width(widthTextField)
-                .height(heightTextField)
                 .settingsTable(this)
                 .xOffset(xOffsetTextField)
                 .yOffset(yOffsetTextField)
@@ -86,12 +84,6 @@ public class SettingsTable extends Table {
         this.add(bLabel);
         this.add(bTextField);
         this.row();
-        this.add(widthLabel);
-        this.add(widthTextField);
-        this.row();
-        this.add(heightLabel);
-        this.add(heightTextField);
-        this.row();
         this.add(xOffsetLabel);
         this.add(xOffsetTextField);
         this.row();
@@ -106,6 +98,14 @@ public class SettingsTable extends Table {
         this.row();
         this.add(emptyLabel);
         this.add(generateButton);
+        this.row();
+        this.add(emptyLabel);
+        this.row();
+        this.add(widthLabel);
+        this.add(widthTextField);
+        this.row();
+        this.add(heightLabel);
+        this.add(heightTextField);
         this.row();
         this.add(emptyLabel);
         this.add(saveButton);

@@ -29,8 +29,8 @@ public class FractalView extends Group implements EventListener {
         this.addListener(this);
         this.FRACTAL_WIDTH = viewport.getScreenWidth();
         this.FRACTAL_HEIGHT = viewport.getScreenHeight();
-        settings = Settings.getInitialSettings(FRACTAL_WIDTH, FRACTAL_HEIGHT);
-        updatePixMap();
+        settings = Settings.getInitialSettings();
+        updatePixMap(FRACTAL_WIDTH, FRACTAL_HEIGHT);
         sprite = new Sprite(new Texture(pixmap));
         setBounds(sprite.getX(), sprite.getY(), FRACTAL_WIDTH, FRACTAL_HEIGHT);
         this.setWidth(FRACTAL_WIDTH);
@@ -39,32 +39,31 @@ public class FractalView extends Group implements EventListener {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        //System.out.println(progressBar.getProgress());
         sprite.draw(batch);
         this.drawChildren(batch, parentAlpha);
     }
 
-    private void updatePixMap() {
+    private void updatePixMap(int width, int height) {
         Settings tmpSettings = settings.copy();
-        Pixmap tmpPixmap = new Pixmap(tmpSettings.getWidth(), tmpSettings.getHeight(), Pixmap.Format.RGBA8888);
+        Pixmap tmpPixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
         tmpPixmap.setColor(Color.BLACK);
         tmpPixmap.fill();
         tmpPixmap.setBlending(Pixmap.Blending.None);
 
-        double cRe = settings.getComplexNumber().getRe();
-        double cIm = settings.getComplexNumber().getIm();
+        double cRe = tmpSettings.getComplexNumber().getRe();
+        double cIm = tmpSettings.getComplexNumber().getIm();
 
         double prevRe = 0;
         double prevIm = 0;
-        double xOffset = settings.getXOffset();
-        double yOffset = settings.getYOffset();
-        double zoom = settings.getZoom();
-        float percent = tmpSettings.getWidth() * tmpSettings.getHeight();
-        for (int x = 0; x < tmpSettings.getWidth(); x++) {
-            for (int y = 0; y < tmpSettings.getHeight(); y++) {
-                progressBar.getProgressBar().setValue((x * tmpSettings.getHeight() + y) / percent);
-                double nextRe = 1.5 * (x - (double) tmpSettings.getWidth() / 2) / (tmpSettings.getWidth() * 0.5 * zoom) - xOffset;
-                double nextIm = (y - (double) tmpSettings.getHeight() / 2) / (tmpSettings.getHeight() * 0.5 * zoom) - yOffset;
+        double xOffset = tmpSettings.getXOffset();
+        double yOffset = tmpSettings.getYOffset();
+        double zoom = tmpSettings.getZoom();
+        float percent = width * (float) height;
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                progressBar.getProgressBar().setValue((x * height + y) / percent);
+                double nextRe = 1.5 * (x - (double) width / 2) / (width * 0.5 * zoom) - xOffset;
+                double nextIm = (y - (double) height / 2) / (height * 0.5 * zoom) - yOffset;
                 int p;
                 for (p = 0; p < settings.getNumberOfIteration(); p++) {
                     prevRe = nextRe;
@@ -76,9 +75,9 @@ public class FractalView extends Group implements EventListener {
                     }
 
                 }
-                int color = Color.rgba8888(getRgbPart(settings, p, settings.getRMultiplier()),
-                        getRgbPart(settings, p, settings.getGMultiplier()),
-                        getRgbPart(settings, p, settings.getBMultiplier()),
+                int color = Color.rgba8888(getRgbPart(tmpSettings, p, tmpSettings.getRMultiplier()),
+                        getRgbPart(tmpSettings, p, tmpSettings.getGMultiplier()),
+                        getRgbPart(tmpSettings, p, tmpSettings.getBMultiplier()),
                         1);
                 if (p == 0) {
                     color = Color.rgba8888(Color.BLACK);
@@ -126,7 +125,8 @@ public class FractalView extends Group implements EventListener {
             return true;
         }
         if (event instanceof SaveButtonEvent) {
-            saveToFile();
+            SaveButtonEvent saveButtonEvent = (SaveButtonEvent) event;
+            saveFractal(saveButtonEvent.getWidth(), saveButtonEvent.getHeight());
             return true;
         }
         return false;
@@ -135,11 +135,23 @@ public class FractalView extends Group implements EventListener {
     private void updateFractal() {
         this.addActor(progressBar.getProgressBar());
         new Thread(() -> {
-            updatePixMap();
+            updatePixMap(FRACTAL_WIDTH, FRACTAL_HEIGHT);
             Gdx.app.postRunnable(() -> {
                 this.removeActor(progressBar.getProgressBar());
                 progressBar.getProgressBar().setValue(0f);
                 sprite = new Sprite(new Texture(pixmap));
+            });
+        }).start();
+    }
+
+    private void saveFractal(int width, int height) {
+        this.addActor(progressBar.getProgressBar());
+        new Thread(() -> {
+            updatePixMap(width, height);
+            Gdx.app.postRunnable(() -> {
+                this.removeActor(progressBar.getProgressBar());
+                progressBar.getProgressBar().setValue(0f);
+                saveToFile();
             });
         }).start();
     }
@@ -151,7 +163,7 @@ public class FractalView extends Group implements EventListener {
     }
 
     public void moveAndZoom(int screenX, int screenY, Zoom zoom) {
-        settings.move(screenX, screenY, settings.getWidth(), settings.getHeight());
+        settings.move(screenX, screenY, FRACTAL_WIDTH, FRACTAL_HEIGHT);
         settings.zoom(zoom);
         updateSettingTable();
         updateFractal();
@@ -169,7 +181,7 @@ public class FractalView extends Group implements EventListener {
     }
 
     public void move(int screenX, int screenY) {
-        settings.move(screenX, screenY, settings.getWidth(), settings.getHeight());
+        settings.move(screenX, screenY, FRACTAL_WIDTH, FRACTAL_HEIGHT);
         updateSettingTable();
         updateFractal();
     }

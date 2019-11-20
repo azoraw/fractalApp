@@ -15,8 +15,6 @@ public class SettingsEmitter extends ClickListener {
     private final TextField r;
     private final TextField g;
     private final TextField b;
-    private final TextField width;
-    private final TextField height;
     private final TextField xOffset;
     private final TextField yOffset;
     private final TextField zoom;
@@ -39,8 +37,6 @@ public class SettingsEmitter extends ClickListener {
                             .rMultiplier(Integer.parseInt(r.getText()))
                             .gMultiplier(Integer.parseInt(g.getText()))
                             .bMultiplier(Integer.parseInt(b.getText()))
-                            .width(Integer.parseInt(width.getText()))
-                            .height(Integer.parseInt(height.getText()))
                             .numberOfIteration(Integer.parseInt(numberOfIteration.getText()))
                             .xOffset(Double.parseDouble(xOffset.getText()))
                             .yOffset(Double.parseDouble(yOffset.getText()))
@@ -60,8 +56,6 @@ public class SettingsEmitter extends ClickListener {
             r.setText(String.valueOf(settings.getRMultiplier()));
             g.setText(String.valueOf(settings.getGMultiplier()));
             b.setText(String.valueOf(settings.getBMultiplier()));
-            width.setText(String.valueOf(settings.getWidth()));
-            height.setText(String.valueOf(settings.getHeight()));
             xOffset.setText(String.valueOf(settings.getXOffset()));
             yOffset.setText(String.valueOf(settings.getYOffset()));
             zoom.setText(String.valueOf(settings.getZoom()));

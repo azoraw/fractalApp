@@ -11,8 +11,6 @@ public class Settings {
     private final int rMultiplier;
     private final int gMultiplier;
     private final int bMultiplier;
-    private final int width;
-    private final int height;
 
     private ComplexNumber complexNumber;
     private final double moveDelta;
@@ -21,14 +19,12 @@ public class Settings {
     private double zoom;
     private double zoomMultiplier;
 
-    public static Settings getInitialSettings(int screenWidth, int screenHeight) {
+    public static Settings getInitialSettings() {
         return Settings.builder()
                 .numberOfIteration(3000)
                 .rMultiplier(0)
                 .gMultiplier(1)
                 .bMultiplier(13)
-                .width(screenWidth)
-                .height(screenHeight)
                 .complexNumber(new ComplexNumber(-0.7, 0.27015))
                 .moveDelta(0.02)
                 .xOffset(0)
