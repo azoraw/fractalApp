@@ -73,7 +73,6 @@ public class FractalView extends Group implements EventListener {
                     if ((nextRe * nextRe + nextIm * nextIm) > 4) {
                         break;
                     }
-
                 }
                 int color = Color.rgba8888(getRgbPart(tmpSettings, p, tmpSettings.getRMultiplier()),
                         getRgbPart(tmpSettings, p, tmpSettings.getGMultiplier()),
