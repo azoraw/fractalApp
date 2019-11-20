@@ -8,6 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import static com.badlogic.gdx.scenes.scene2d.ui.ProgressBar.*;
 
 @Getter
@@ -15,6 +18,7 @@ import static com.badlogic.gdx.scenes.scene2d.ui.ProgressBar.*;
 public class ProgressBarActor {
 
     private ProgressBar progressBar = createProgressBar();
+    private AtomicBoolean isShown = new AtomicBoolean(false);
 
     private ProgressBar createProgressBar() {
         ProgressBar progressBar = new ProgressBar(0.0f, 1.0f, 0.01f, false, createSkin());

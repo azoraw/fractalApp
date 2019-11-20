@@ -132,28 +132,37 @@ public class FractalView extends Group implements EventListener {
         return false;
     }
 
-    private void updateFractal() {
-        this.addActor(progressBar.getProgressBar());
-        new Thread(() -> {
-            updatePixMap(FRACTAL_WIDTH, FRACTAL_HEIGHT);
-            Gdx.app.postRunnable(() -> {
-                this.removeActor(progressBar.getProgressBar());
-                progressBar.getProgressBar().setValue(0f);
-                sprite = new Sprite(new Texture(pixmap));
-            });
-        }).start();
+    private synchronized void updateFractal() {
+        if(!progressBar.getIsShown().get()) {
+            progressBar.getIsShown().set(true);
+            this.addActor(progressBar.getProgressBar());
+            new Thread(() -> {
+                updatePixMap(FRACTAL_WIDTH, FRACTAL_HEIGHT);
+                Gdx.app.postRunnable(() -> {
+                    this.removeActor(progressBar.getProgressBar());
+                    progressBar.getProgressBar().setValue(0f);
+                    sprite = new Sprite(new Texture(pixmap));
+                    pixmap.dispose();
+                    progressBar.getIsShown().set(false);
+                });
+            }).start();
+        }
     }
 
-    private void saveFractal(int width, int height) {
-        this.addActor(progressBar.getProgressBar());
-        new Thread(() -> {
-            updatePixMap(width, height);
-            Gdx.app.postRunnable(() -> {
-                this.removeActor(progressBar.getProgressBar());
-                progressBar.getProgressBar().setValue(0f);
-                saveToFile();
-            });
-        }).start();
+    private synchronized void saveFractal(int width, int height) {
+        if(!progressBar.getIsShown().get()) {
+            progressBar.getIsShown().set(true);
+            this.addActor(progressBar.getProgressBar());
+            new Thread(() -> {
+                updatePixMap(width, height);
+                Gdx.app.postRunnable(() -> {
+                    this.removeActor(progressBar.getProgressBar());
+                    progressBar.getProgressBar().setValue(0f);
+                    saveToFile();
+                    progressBar.getIsShown().set(false);
+                });
+            }).start();
+        }
     }
 
     public void zoom(Zoom zoom) {
