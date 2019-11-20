@@ -3,7 +3,7 @@ package com.zoraw.fractal;
 import lombok.Builder;
 import lombok.Getter;
 
-@Builder
+@Builder(toBuilder = true)
 @Getter
 public class Settings {
 
@@ -11,28 +11,42 @@ public class Settings {
     private final int rMultiplier;
     private final int gMultiplier;
     private final int bMultiplier;
+    private final int width;
+    private final int height;
 
     private ComplexNumber complexNumber;
+    private final double moveDelta;
     private double xOffset;
     private double yOffset;
     private double zoom;
+    private double zoomMultiplier;
 
-    public static final Settings INITIAL_SETTINGS = Settings.builder()
-            .complexNumber(new ComplexNumber(-0.7, 0.27015))
-            .numberOfIteration(3000)
-            .rMultiplier(0)
-            .gMultiplier(1)
-            .bMultiplier(13)
-            .xOffset(0)
-            .yOffset(0)
-            .zoom(1)
-            .build();
+    public static Settings getInitialSettings(int screenWidth, int screenHeight) {
+        return Settings.builder()
+                .numberOfIteration(3000)
+                .rMultiplier(0)
+                .gMultiplier(1)
+                .bMultiplier(13)
+                .width(screenWidth)
+                .height(screenHeight)
+                .complexNumber(new ComplexNumber(-0.7, 0.27015))
+                .moveDelta(0.02)
+                .xOffset(0)
+                .yOffset(0)
+                .zoom(1)
+                .zoomMultiplier(2)
+                .build();
+    }
+
+    public Settings copy () {
+        return this.toBuilder().build();
+    }
 
     public void zoom(Zoom zoom) {
         if (zoom == Zoom.IN) {
-            this.zoom *= 2;
+            this.zoom *= zoomMultiplier;
         } else
-            this.zoom /= 2;
+            this.zoom /= zoomMultiplier;
     }
 
 
@@ -64,17 +78,16 @@ public class Settings {
     public void moveJulia(Direction direction) {
         switch (direction) {
             case UP:
-                complexNumber = this.complexNumber.move(0, 0.02);
+                complexNumber = this.complexNumber.move(0, moveDelta);
                 break;
             case DOWN:
-                complexNumber = this.complexNumber.move(0, -0.02);
+                complexNumber = this.complexNumber.move(0, -moveDelta);
                 break;
             case LEFT:
-                complexNumber = this.complexNumber.move(-0.02, 0);
+                complexNumber = this.complexNumber.move(-moveDelta, 0);
                 break;
             case RIGHT:
-                complexNumber = this.complexNumber.move(0.02, 0);
-
+                complexNumber = this.complexNumber.move(moveDelta, 0);
                 break;
         }
     }

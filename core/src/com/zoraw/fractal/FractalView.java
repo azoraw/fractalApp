@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.utils.async.AsyncExecutor;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import java.time.LocalDateTime;
@@ -28,7 +27,7 @@ public class FractalView extends Group implements EventListener {
         this.addListener(this);
         this.FRACTAL_WIDTH = viewport.getScreenWidth();
         this.FRACTAL_HEIGHT = viewport.getScreenHeight();
-        settings = Settings.INITIAL_SETTINGS;
+        settings = Settings.getInitialSettings(FRACTAL_WIDTH, FRACTAL_HEIGHT);
         updatePixMap();
         updateFractal();
         setBounds(sprite.getX(), sprite.getY(), FRACTAL_WIDTH, FRACTAL_HEIGHT);
@@ -42,8 +41,9 @@ public class FractalView extends Group implements EventListener {
         this.drawChildren(batch, parentAlpha);
     }
 
-    private boolean updatePixMap() {
-        Pixmap tmpPixmap = new Pixmap(FRACTAL_WIDTH, FRACTAL_HEIGHT, Pixmap.Format.RGBA8888);
+    private void updatePixMap() {
+        Settings tmpSettings = settings.copy();
+        Pixmap tmpPixmap = new Pixmap(tmpSettings.getWidth(), tmpSettings.getHeight(), Pixmap.Format.RGBA8888);
         tmpPixmap.setColor(Color.BLACK);
         tmpPixmap.fill();
         tmpPixmap.setBlending(Pixmap.Blending.None);
@@ -57,10 +57,10 @@ public class FractalView extends Group implements EventListener {
         double yOffset = settings.getYOffset();
         double zoom = settings.getZoom();
 
-        for (int x = 0; x < FRACTAL_WIDTH; x++) {
-            for (int y = 0; y < FRACTAL_HEIGHT; y++) {
-                double nextRe = 1.5 * (x - (double) FRACTAL_WIDTH / 2) / (FRACTAL_WIDTH * 0.5 * zoom) - xOffset;
-                double nextIm = (y - (double) FRACTAL_HEIGHT / 2) / (FRACTAL_HEIGHT * 0.5 * zoom) - yOffset;
+        for (int x = 0; x < tmpSettings.getWidth(); x++) {
+            for (int y = 0; y < tmpSettings.getHeight(); y++) {
+                double nextRe = 1.5 * (x - (double) tmpSettings.getWidth() / 2) / (tmpSettings.getWidth() * 0.5 * zoom) - xOffset;
+                double nextIm = (y - (double) tmpSettings.getHeight() / 2) / (tmpSettings.getHeight() * 0.5 * zoom) - yOffset;
                 int p;
                 for (p = 0; p < settings.getNumberOfIteration(); p++) {
                     prevRe = nextRe;
@@ -82,13 +82,14 @@ public class FractalView extends Group implements EventListener {
                 tmpPixmap.drawPixel(x, y, color);
             }
         }
+        drawDebugCircle(tmpPixmap);
+        this.pixmap = tmpPixmap;
+    }
+
+    private void drawDebugCircle(Pixmap tmpPixmap) {
         tmpPixmap.setColor(Color.RED);
         tmpPixmap.drawCircle(FRACTAL_WIDTH / 2, FRACTAL_HEIGHT / 2, 50);
         tmpPixmap.drawCircle(FRACTAL_WIDTH / 2, FRACTAL_HEIGHT / 2, 5);
-        this.pixmap = tmpPixmap;
-        sprite = new Sprite(new Texture(pixmap));
-
-        return true;
     }
 
     private float getRgbPart(Settings settings, int p, int multiplier) {
@@ -139,7 +140,7 @@ public class FractalView extends Group implements EventListener {
     }
 
     public void moveAndZoom(int screenX, int screenY, Zoom zoom) {
-        settings.move(screenX, screenY, FRACTAL_WIDTH, FRACTAL_HEIGHT);
+        settings.move(screenX, screenY, settings.getWidth(), settings.getHeight());
         settings.zoom(zoom);
         updateSettingTable();
         updateFractal();
@@ -157,7 +158,7 @@ public class FractalView extends Group implements EventListener {
     }
 
     public void move(int screenX, int screenY) {
-        settings.move(screenX, screenY, FRACTAL_WIDTH, FRACTAL_HEIGHT);
+        settings.move(screenX, screenY, settings.getWidth(), settings.getHeight());
         updateSettingTable();
         updateFractal();
     }
