@@ -7,12 +7,12 @@ import lombok.Getter;
 @Getter
 public class Settings {
 
-    private final ComplexNumber complexNumber;
     private final int numberOfIteration;
     private final int rMultiplier;
     private final int gMultiplier;
     private final int bMultiplier;
 
+    private ComplexNumber complexNumber;
     private double xOffset;
     private double yOffset;
     private double zoom;
@@ -59,5 +59,23 @@ public class Settings {
         double y = (((double) screenY * 2 / fractalHeight) - 1) / this.zoom;
         xOffset -= x;
         yOffset -= y;
+    }
+
+    public void moveJulia(Direction direction) {
+        switch (direction) {
+            case UP:
+                complexNumber = this.complexNumber.move(0, 0.02);
+                break;
+            case DOWN:
+                complexNumber = this.complexNumber.move(0, -0.02);
+                break;
+            case LEFT:
+                complexNumber = this.complexNumber.move(-0.02, 0);
+                break;
+            case RIGHT:
+                complexNumber = this.complexNumber.move(0.02, 0);
+
+                break;
+        }
     }
 }

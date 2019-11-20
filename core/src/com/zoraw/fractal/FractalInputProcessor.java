@@ -11,21 +11,42 @@ public class FractalInputProcessor implements InputProcessor {
 
     private final FractalView fractalView;
 
+    private boolean ctrlPressed = false;
+
     @Override
     public boolean keyDown(int keycode) {
         switch (keycode) {
             case Input.Keys.LEFT:
-                this.fractalView.move(Direction.LEFT);
+                if (ctrlPressed) {
+                    this.fractalView.moveJulia(Direction.LEFT);
+                } else {
+                    this.fractalView.move(Direction.LEFT);
+                }
                 break;
             case Input.Keys.RIGHT:
-                this.fractalView.move(Direction.RIGHT);
+                if (ctrlPressed) {
+                    this.fractalView.moveJulia(Direction.RIGHT);
+                } else {
+                    this.fractalView.move(Direction.RIGHT);
+                }
                 break;
             case Input.Keys.UP:
-                this.fractalView.move(Direction.UP);
+                if (ctrlPressed) {
+                    this.fractalView.moveJulia(Direction.UP);
+                } else {
+                    this.fractalView.move(Direction.UP);
+                }
                 break;
             case Input.Keys.DOWN:
-                this.fractalView.move(Direction.DOWN);
+                if (ctrlPressed) {
+                    this.fractalView.moveJulia(Direction.DOWN);
+                } else {
+                    this.fractalView.move(Direction.DOWN);
+                }
                 break;
+            case Input.Keys.CONTROL_LEFT:
+            case Input.Keys.CONTROL_RIGHT:
+                ctrlPressed = true;
             default:
         }
         return false;
@@ -33,6 +54,9 @@ public class FractalInputProcessor implements InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
+        if (keycode == Input.Keys.CONTROL_LEFT || keycode == Input.Keys.CONTROL_RIGHT) {
+            ctrlPressed = false;
+        }
         return false;
     }
 
@@ -47,7 +71,7 @@ public class FractalInputProcessor implements InputProcessor {
             this.fractalView.moveAndZoom(screenX, screenY, Zoom.IN);
         } else if (button == Input.Buttons.RIGHT) {
             this.fractalView.moveAndZoom(screenX, screenY, Zoom.OUT);
-        } else if(button == Input.Buttons.MIDDLE) {
+        } else if (button == Input.Buttons.MIDDLE) {
             this.fractalView.move(screenX, screenY);
         }
         return false;
