@@ -23,7 +23,7 @@ public class FractalView extends Group implements EventListener {
     private Pixmap pixmap;
     private Settings settings;
     private Sprite sprite;
-    private ProgressBar progressBar = new ProgressBar();
+    private ProgressBarActor progressBar = new ProgressBarActor();
 
     public FractalView(ScreenViewport viewport) {
         this.addListener(this);
@@ -39,13 +39,12 @@ public class FractalView extends Group implements EventListener {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        System.out.println(progressBar.getProgress());
+        //System.out.println(progressBar.getProgress());
         sprite.draw(batch);
         this.drawChildren(batch, parentAlpha);
     }
 
     private void updatePixMap() {
-        progressBar.getVisible().getAndSet(true);
         Settings tmpSettings = settings.copy();
         Pixmap tmpPixmap = new Pixmap(tmpSettings.getWidth(), tmpSettings.getHeight(), Pixmap.Format.RGBA8888);
         tmpPixmap.setColor(Color.BLACK);
@@ -63,7 +62,7 @@ public class FractalView extends Group implements EventListener {
         float percent = tmpSettings.getWidth() * tmpSettings.getHeight();
         for (int x = 0; x < tmpSettings.getWidth(); x++) {
             for (int y = 0; y < tmpSettings.getHeight(); y++) {
-                progressBar.setProgress((x * tmpSettings.getHeight() + y) / percent);
+                progressBar.getProgressBar().setValue((x * tmpSettings.getHeight() + y) / percent);
                 double nextRe = 1.5 * (x - (double) tmpSettings.getWidth() / 2) / (tmpSettings.getWidth() * 0.5 * zoom) - xOffset;
                 double nextIm = (y - (double) tmpSettings.getHeight() / 2) / (tmpSettings.getHeight() * 0.5 * zoom) - yOffset;
                 int p;
@@ -88,7 +87,6 @@ public class FractalView extends Group implements EventListener {
             }
         }
         drawDebugCircle(tmpPixmap);
-        progressBar.getVisible().getAndSet(false);
         this.pixmap = tmpPixmap;
     }
 
@@ -135,9 +133,14 @@ public class FractalView extends Group implements EventListener {
     }
 
     private void updateFractal() {
+        this.addActor(progressBar.getProgressBar());
         new Thread(() -> {
             updatePixMap();
-            Gdx.app.postRunnable(() -> sprite = new Sprite(new Texture(pixmap)));
+            Gdx.app.postRunnable(() -> {
+                this.removeActor(progressBar.getProgressBar());
+                progressBar.getProgressBar().setValue(0f);
+                sprite = new Sprite(new Texture(pixmap));
+            });
         }).start();
     }
 
