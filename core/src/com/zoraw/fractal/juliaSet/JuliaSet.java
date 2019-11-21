@@ -1,6 +1,7 @@
 package com.zoraw.fractal.juliaSet;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zoraw.fractal.common.Direction;
+import com.zoraw.fractal.common.FractalActor;
 import com.zoraw.fractal.common.ProgressBarActor;
 import com.zoraw.fractal.common.Zoom;
 import com.zoraw.fractal.juliaSet.settings.SaveButtonEvent;
@@ -23,7 +25,7 @@ import com.zoraw.fractal.juliaSet.settings.SettingsTable;
 import java.time.LocalDateTime;
 import java.util.zip.Deflater;
 
-public class JuliaSet extends Group implements EventListener {
+public class JuliaSet extends FractalActor implements EventListener {
 
     private final int FRACTAL_WIDTH;
     private final int FRACTAL_HEIGHT;
@@ -206,5 +208,10 @@ public class JuliaSet extends Group implements EventListener {
                 "g" + settings.getGMultiplier() +
                 "b" + settings.getBMultiplier() +
                 ".png";
+    }
+
+    @Override
+    public InputProcessor getInputProcessor() {
+        return new JuliaSetInputProcessor(this);
     }
 }

@@ -11,7 +11,7 @@ public class GeneralSettings extends Table {
 
     private final FractalChanger fractalChanger;
 
-    public GeneralSettings(Viewport viewport, FractalChanger fractalChanger) {
+    public GeneralSettings(Viewport viewport, FractalChanger fractalChanger, String fractalName) {
         this.fractalChanger = fractalChanger;
         this.setWidth(50);
         this.align(Align.left | Align.top);
@@ -19,7 +19,7 @@ public class GeneralSettings extends Table {
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
         SelectBox<String> selectBox = new SelectBox<>(skin);
         selectBox.setItems(Fractal.getNames());
-        selectBox.setSelected(Fractal.getInitial().getFractalName());
+        selectBox.setSelected(fractalName);
         selectBox.addListener(new FractalChangeListener(this));
         this.add(selectBox);
     }

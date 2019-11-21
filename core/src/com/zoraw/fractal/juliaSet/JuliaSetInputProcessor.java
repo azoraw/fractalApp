@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public class FractalInputProcessor implements InputProcessor {
+public class JuliaSetInputProcessor implements InputProcessor {
 
     private final JuliaSet juliaSet;
 
