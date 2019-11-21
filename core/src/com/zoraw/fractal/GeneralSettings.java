@@ -1,9 +1,7 @@
 package com.zoraw.fractal;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -21,7 +19,12 @@ public class GeneralSettings extends Table {
         selectBox.setItems(Fractal.getNames());
         selectBox.setSelected(fractalName);
         selectBox.addListener(new FractalChangeListener(this));
+
+        TextButton fullscreenButton = new TextButton(Gdx.graphics.isFullscreen() ? "windowed mode" : "fullscreen mode", skin);
+        fullscreenButton.addListener(new FullscreenButtonListener(fullscreenButton));
         this.add(selectBox);
+        this.row();
+        this.add(fullscreenButton);
     }
 
     public void changeFractal(Fractal fractal) {
