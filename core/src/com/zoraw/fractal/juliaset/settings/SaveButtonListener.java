@@ -1,4 +1,4 @@
-package com.zoraw.fractal.juliaSet.settings;
+package com.zoraw.fractal.juliaset.settings;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;

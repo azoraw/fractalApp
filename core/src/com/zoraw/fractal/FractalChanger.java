@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.zoraw.fractal.common.FractalActor;
-import com.zoraw.fractal.juliaSet.JuliaSet;
 
 public class FractalChanger {
 
@@ -21,7 +20,7 @@ public class FractalChanger {
     public FractalChanger(Stage stage) {
         this.stage = stage;
         stage.getRoot().addCaptureListener(getSettingListener());
-        FractalActor currentFractal = new JuliaSet(stage.getViewport()); //todo: add strategy
+        FractalActor currentFractal = Fractal.getInitial().createInstance(stage.getViewport());
         GeneralSettings generalSettings = createGeneralSettings(Fractal.getInitial(), stage);
         currentFractalInputProcessor = currentFractal.getInputProcessor();
         inputMultiplexer = new InputMultiplexer(stage, currentFractalInputProcessor);
@@ -33,6 +32,10 @@ public class FractalChanger {
 
     public void changeFractal(Fractal fractal) {
         clearStage();
+        FractalActor currentFractal = fractal.createInstance(stage.getViewport());
+        currentFractalInputProcessor = currentFractal.getInputProcessor();
+        inputMultiplexer.addProcessor(currentFractalInputProcessor);
+        stage.addActor(currentFractal);
         stage.addActor(createGeneralSettings(fractal, stage));
     }
 

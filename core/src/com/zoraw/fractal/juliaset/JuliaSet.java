@@ -1,4 +1,4 @@
-package com.zoraw.fractal.juliaSet;
+package com.zoraw.fractal.juliaset;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -11,16 +11,15 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zoraw.fractal.common.Direction;
 import com.zoraw.fractal.common.FractalActor;
 import com.zoraw.fractal.common.ProgressBarActor;
 import com.zoraw.fractal.common.Zoom;
-import com.zoraw.fractal.juliaSet.settings.SaveButtonEvent;
-import com.zoraw.fractal.juliaSet.settings.Settings;
-import com.zoraw.fractal.juliaSet.settings.SettingsChangeEvent;
-import com.zoraw.fractal.juliaSet.settings.SettingsTable;
+import com.zoraw.fractal.juliaset.settings.SaveButtonEvent;
+import com.zoraw.fractal.juliaset.settings.Settings;
+import com.zoraw.fractal.juliaset.settings.SettingsChangeEvent;
+import com.zoraw.fractal.juliaset.settings.SettingsTable;
 
 import java.time.LocalDateTime;
 import java.util.zip.Deflater;

@@ -1,4 +1,4 @@
-package com.zoraw.fractal.juliaSet.settings;
+package com.zoraw.fractal.mandelbrotset.settings;
 
 import com.badlogic.gdx.scenes.scene2d.Event;
 import lombok.Builder;

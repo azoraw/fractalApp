@@ -1,4 +1,4 @@
-package com.zoraw.fractal.juliaSet;
+package com.zoraw.fractal.mandelbrotset;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -9,9 +9,9 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public class JuliaSetInputProcessor implements InputProcessor {
+public class MandelbrotSetInputProcessor implements InputProcessor {
 
-    private final JuliaSet juliaSet;
+    private final MandelbrotSet mandelbrotset;
 
     private boolean ctrlPressed = false;
 
@@ -20,30 +20,30 @@ public class JuliaSetInputProcessor implements InputProcessor {
         switch (keycode) {
             case Input.Keys.LEFT:
                 if (ctrlPressed) {
-                    this.juliaSet.moveJulia(Direction.LEFT);
+                    this.mandelbrotset.moveJulia(Direction.LEFT);
                 } else {
-                    this.juliaSet.move(Direction.LEFT);
+                    this.mandelbrotset.move(Direction.LEFT);
                 }
                 break;
             case Input.Keys.RIGHT:
                 if (ctrlPressed) {
-                    this.juliaSet.moveJulia(Direction.RIGHT);
+                    this.mandelbrotset.moveJulia(Direction.RIGHT);
                 } else {
-                    this.juliaSet.move(Direction.RIGHT);
+                    this.mandelbrotset.move(Direction.RIGHT);
                 }
                 break;
             case Input.Keys.UP:
                 if (ctrlPressed) {
-                    this.juliaSet.moveJulia(Direction.UP);
+                    this.mandelbrotset.moveJulia(Direction.UP);
                 } else {
-                    this.juliaSet.move(Direction.UP);
+                    this.mandelbrotset.move(Direction.UP);
                 }
                 break;
             case Input.Keys.DOWN:
                 if (ctrlPressed) {
-                    this.juliaSet.moveJulia(Direction.DOWN);
+                    this.mandelbrotset.moveJulia(Direction.DOWN);
                 } else {
-                    this.juliaSet.move(Direction.DOWN);
+                    this.mandelbrotset.move(Direction.DOWN);
                 }
                 break;
             case Input.Keys.CONTROL_LEFT:
@@ -70,11 +70,11 @@ public class JuliaSetInputProcessor implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (button == Input.Buttons.LEFT) {
-            this.juliaSet.moveAndZoom(screenX, screenY, Zoom.IN);
+            this.mandelbrotset.moveAndZoom(screenX, screenY, Zoom.IN);
         } else if (button == Input.Buttons.RIGHT) {
-            this.juliaSet.moveAndZoom(screenX, screenY, Zoom.OUT);
+            this.mandelbrotset.moveAndZoom(screenX, screenY, Zoom.OUT);
         } else if (button == Input.Buttons.MIDDLE) {
-            this.juliaSet.move(screenX, screenY);
+            this.mandelbrotset.move(screenX, screenY);
         }
         return false;
     }
@@ -96,7 +96,7 @@ public class JuliaSetInputProcessor implements InputProcessor {
 
     @Override
     public boolean scrolled(int amount) {
-        this.juliaSet.zoom(amount < 0 ? Zoom.IN : Zoom.OUT);
+        this.mandelbrotset.zoom(amount < 0 ? Zoom.IN : Zoom.OUT);
         return false;
     }
 }

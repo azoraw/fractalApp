@@ -1,4 +1,4 @@
-package com.zoraw.fractal.juliaSet.settings;
+package com.zoraw.fractal.juliaset.settings;
 
 import com.zoraw.fractal.common.ComplexNumber;
 import com.zoraw.fractal.common.Direction;
