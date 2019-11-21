@@ -20,28 +20,26 @@ public class MultibrotSetInputProcessor implements InputProcessor {
         switch (keycode) {
             case Input.Keys.LEFT:
                 if (ctrlPressed) {
-                    this.multibrotSet.moveJulia(Direction.LEFT);
+                    this.multibrotSet.moveSet(Direction.LEFT);
                 } else {
                     this.multibrotSet.move(Direction.LEFT);
                 }
                 break;
             case Input.Keys.RIGHT:
                 if (ctrlPressed) {
-                    this.multibrotSet.moveJulia(Direction.RIGHT);
+                    this.multibrotSet.moveSet(Direction.RIGHT);
                 } else {
                     this.multibrotSet.move(Direction.RIGHT);
                 }
                 break;
             case Input.Keys.UP:
                 if (ctrlPressed) {
-                    this.multibrotSet.moveJulia(Direction.UP);
                 } else {
                     this.multibrotSet.move(Direction.UP);
                 }
                 break;
             case Input.Keys.DOWN:
                 if (ctrlPressed) {
-                    this.multibrotSet.moveJulia(Direction.DOWN);
                 } else {
                     this.multibrotSet.move(Direction.DOWN);
                 }

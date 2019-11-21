@@ -150,7 +150,7 @@ public class MultibrotSet extends FractalActor implements EventListener {
         updateFractal();
     }
 
-    public void moveJulia(Direction left) {
+    public void moveSet(Direction left) {
         settings.moveJulia(left);
         updateSettingTable();
         updateFractal();
