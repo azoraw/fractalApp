@@ -20,28 +20,24 @@ public class MandelbrotSetInputProcessor implements InputProcessor {
         switch (keycode) {
             case Input.Keys.LEFT:
                 if (ctrlPressed) {
-                    this.mandelbrotset.moveJulia(Direction.LEFT);
                 } else {
                     this.mandelbrotset.move(Direction.LEFT);
                 }
                 break;
             case Input.Keys.RIGHT:
                 if (ctrlPressed) {
-                    this.mandelbrotset.moveJulia(Direction.RIGHT);
                 } else {
                     this.mandelbrotset.move(Direction.RIGHT);
                 }
                 break;
             case Input.Keys.UP:
                 if (ctrlPressed) {
-                    this.mandelbrotset.moveJulia(Direction.UP);
                 } else {
                     this.mandelbrotset.move(Direction.UP);
                 }
                 break;
             case Input.Keys.DOWN:
                 if (ctrlPressed) {
-                    this.mandelbrotset.moveJulia(Direction.DOWN);
                 } else {
                     this.mandelbrotset.move(Direction.DOWN);
                 }

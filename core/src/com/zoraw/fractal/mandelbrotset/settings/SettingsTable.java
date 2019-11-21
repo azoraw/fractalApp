@@ -14,8 +14,6 @@ public class SettingsTable extends Table {
         this.align(Align.right | Align.top);
         this.setPosition(viewport.getScreenWidth() - 50, viewport.getScreenHeight());
         Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
-        Label re = new Label("re: ", skin);
-        Label im = new Label("im: ", skin);
         Label moveDeltaLabel = new Label("move delta: ", skin);
         Label numberOfIterationLabel = new Label("no. iteration: ", skin);
         Label rLabel = new Label("r: ", skin);
@@ -31,8 +29,6 @@ public class SettingsTable extends Table {
         Label emptyLabel = new Label("", skin);
 
         Settings initSettings = Settings.getInitialSettings();
-        TextField initRe = new TextField(String.valueOf(initSettings.getComplexNumber().getRe()), skin);
-        TextField initIm = new TextField(String.valueOf(initSettings.getComplexNumber().getIm()), skin);
         TextField moveDeltaTextField = new TextField(String.valueOf(initSettings.getMoveDelta()), skin);
         TextField numberOfIteration = new TextField(String.valueOf(initSettings.getNumberOfIteration()), skin);
         TextField rTextField = new TextField(String.valueOf(initSettings.getRMultiplier()), skin);
@@ -49,8 +45,6 @@ public class SettingsTable extends Table {
         saveButton.addListener(new SaveButtonListener(this, widthTextField, heightTextField));
         Button generateButton = new TextButton("save settings", skin);
         settingsEmitter = SettingsEmitter.builder()
-                .re(initRe)
-                .im(initIm)
                 .moveDelta(moveDeltaTextField)
                 .numberOfIteration(numberOfIteration)
                 .r(rTextField)
@@ -63,12 +57,6 @@ public class SettingsTable extends Table {
                 .zoomMultiplier(zoomMultiplierTextField)
                 .build();
         generateButton.addListener(settingsEmitter);
-        this.add(re);
-        this.add(initRe);
-        this.row();
-        this.add(im);
-        this.add(initIm);
-        this.row();
         this.add(moveDeltaLabel);
         this.add(moveDeltaTextField);
         this.row();

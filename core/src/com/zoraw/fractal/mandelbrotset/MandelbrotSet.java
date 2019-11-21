@@ -59,10 +59,6 @@ public class MandelbrotSet extends FractalActor implements EventListener {
         tmpPixmap.fill();
         tmpPixmap.setBlending(Pixmap.Blending.None);
 
-        double cRe = tmpSettings.getComplexNumber().getRe();
-        double cIm = tmpSettings.getComplexNumber().getIm();
-
-
         double xOffset = tmpSettings.getXOffset();
         double yOffset = tmpSettings.getYOffset();
         double zoom = tmpSettings.getZoom();
@@ -70,13 +66,17 @@ public class MandelbrotSet extends FractalActor implements EventListener {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 progressBar.getProgressBar().setValue((x * height + y) / percent);
-                double re =  2 * (x - (double) width / 2) / (width * 0.5 * zoom) - xOffset;
+                double re = 2 * (x - (double) width / 2) / (width * 0.5 * zoom) - xOffset;
                 double im = (y - (double) height / 2) / (height * 0.5 * zoom) - yOffset;
                 double prevRe = 0;
                 double prevIm = 0;
                 double nextRe, nextIm;
                 int p;
                 for (p = 0; p < settings.getNumberOfIteration(); p++) {
+                    /*double pow = pow((prevRe * prevRe + prevIm * prevIm), (1)); //multibrotset
+                    double v = atan2(prevIm, prevRe);
+                    nextRe = pow * cos(2 * v) + re;
+                    nextIm = pow * sin(2 * v) + im;*/
                     nextRe = prevRe * prevRe - prevIm * prevIm + re;
                     nextIm = 2 * prevRe * prevIm + im;
                     if (nextRe * nextRe + nextIm * nextIm > 4) {
@@ -150,12 +150,6 @@ public class MandelbrotSet extends FractalActor implements EventListener {
         updateFractal();
     }
 
-    public void moveJulia(Direction left) {
-        settings.moveJulia(left);
-        updateSettingTable();
-        updateFractal();
-    }
-
     private void updateFractal() {
         if (!progressBar.getIsShown().get()) {
             progressBar.getIsShown().set(true);
@@ -196,8 +190,6 @@ public class MandelbrotSet extends FractalActor implements EventListener {
 
     private String getFileName() {
         return LocalDateTime.now().toString().replace(":", "_") +
-                "re" + settings.getComplexNumber().getRe() +
-                "im" + settings.getComplexNumber().getIm() +
                 "iteration" + settings.getNumberOfIteration() +
                 "r" + settings.getRMultiplier() +
                 "g" + settings.getGMultiplier() +

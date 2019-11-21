@@ -9,8 +9,6 @@ import lombok.Builder;
 @Builder
 public class SettingsEmitter extends ClickListener {
 
-    private final TextField re;
-    private final TextField im;
     private final TextField moveDelta;
     private final TextField numberOfIteration;
     private final TextField r;
@@ -32,8 +30,6 @@ public class SettingsEmitter extends ClickListener {
         try {
             settingsTable.fire(new SettingsChangeEvent(
                     Settings.builder()
-                            .complexNumber(new ComplexNumber(Double.parseDouble(re.getText()),
-                                    Double.parseDouble(im.getText())))
                             .moveDelta(Double.parseDouble(moveDelta.getText()))
                             .rMultiplier(Integer.parseInt(r.getText()))
                             .gMultiplier(Integer.parseInt(g.getText()))
@@ -50,8 +46,6 @@ public class SettingsEmitter extends ClickListener {
     }
 
     public void updateTextFields(Settings settings) {
-            re.setText(String.valueOf(settings.getComplexNumber().getRe()));
-            im.setText(String.valueOf(settings.getComplexNumber().getIm()));
             moveDelta.setText(String.valueOf(settings.getMoveDelta()));
             numberOfIteration.setText(String.valueOf(settings.getNumberOfIteration()));
             r.setText(String.valueOf(settings.getRMultiplier()));

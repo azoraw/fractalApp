@@ -1,6 +1,5 @@
 package com.zoraw.fractal.mandelbrotset.settings;
 
-import com.zoraw.fractal.common.ComplexNumber;
 import com.zoraw.fractal.common.Direction;
 import com.zoraw.fractal.common.Zoom;
 import lombok.Builder;
@@ -15,7 +14,6 @@ public class Settings {
     private final int gMultiplier;
     private final int bMultiplier;
 
-    private ComplexNumber complexNumber;
     private final double moveDelta;
     private double xOffset;
     private double yOffset;
@@ -24,11 +22,10 @@ public class Settings {
 
     public static Settings getInitialSettings() {
         return Settings.builder()
-                .numberOfIteration(3000)
+                .numberOfIteration(30)
                 .rMultiplier(0)
                 .gMultiplier(1)
                 .bMultiplier(13)
-                .complexNumber(new ComplexNumber(-0.7, 0.27015))
                 .moveDelta(0.02)
                 .xOffset(0)
                 .yOffset(0)
@@ -72,24 +69,5 @@ public class Settings {
         double y = (((double) screenY * 2 / fractalHeight) - 1) / this.zoom;
         xOffset -= x;
         yOffset -= y;
-    }
-
-    public void moveJulia(Direction direction) {
-        switch (direction) {
-            case UP:
-                complexNumber = this.complexNumber.move(0, moveDelta);
-                break;
-            case DOWN:
-                complexNumber = this.complexNumber.move(0, -moveDelta);
-                break;
-            case LEFT:
-                complexNumber = this.complexNumber.move(-moveDelta, 0);
-                break;
-            case RIGHT:
-                complexNumber = this.complexNumber.move(moveDelta, 0);
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + direction);
-        }
     }
 }
