@@ -62,8 +62,7 @@ public class MandelbrotSet extends FractalActor implements EventListener {
         double cRe = tmpSettings.getComplexNumber().getRe();
         double cIm = tmpSettings.getComplexNumber().getIm();
 
-        double prevRe = 0;
-        double prevIm = 0;
+
         double xOffset = tmpSettings.getXOffset();
         double yOffset = tmpSettings.getYOffset();
         double zoom = tmpSettings.getZoom();
@@ -71,17 +70,20 @@ public class MandelbrotSet extends FractalActor implements EventListener {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 progressBar.getProgressBar().setValue((x * height + y) / percent);
-                double nextRe = 1.5 * (x - (double) width / 2) / (width * 0.5 * zoom) - xOffset;
-                double nextIm = (y - (double) height / 2) / (height * 0.5 * zoom) - yOffset;
+                double re =  2 * (x - (double) width / 2) / (width * 0.5 * zoom) - xOffset;
+                double im = (y - (double) height / 2) / (height * 0.5 * zoom) - yOffset;
+                double prevRe = 0;
+                double prevIm = 0;
+                double nextRe, nextIm;
                 int p;
                 for (p = 0; p < settings.getNumberOfIteration(); p++) {
-                    prevRe = nextRe;
-                    prevIm = nextIm;
-                    nextRe = prevRe * prevRe - prevIm * prevIm + cRe;
-                    nextIm = 2 * prevRe * prevIm + cIm;
-                    if ((nextRe * nextRe + nextIm * nextIm) > 4) {
+                    nextRe = prevRe * prevRe - prevIm * prevIm + re;
+                    nextIm = 2 * prevRe * prevIm + im;
+                    if (nextRe * nextRe + nextIm * nextIm > 4) {
                         break;
                     }
+                    prevRe = nextRe;
+                    prevIm = nextIm;
                 }
                 int color = Color.rgba8888(getRgbPart(tmpSettings, p, tmpSettings.getRMultiplier()),
                         getRgbPart(tmpSettings, p, tmpSettings.getGMultiplier()),
@@ -95,6 +97,7 @@ public class MandelbrotSet extends FractalActor implements EventListener {
         }
         this.pixmap = tmpPixmap;
     }
+
 
     private float getRgbPart(Settings settings, int p, int multiplier) {
         float v = (float) (p * multiplier) / settings.getNumberOfIteration();
