@@ -127,20 +127,20 @@ public class MandelbrotSet extends FractalActor implements EventListener {
         updateFractal();
     }
 
-    public void moveAndZoom(int screenX, int screenY, Zoom zoom) {
+    public void moveCameraAndZoom(int screenX, int screenY, Zoom zoom) {
         settings.move(screenX, screenY, FRACTAL_WIDTH, FRACTAL_HEIGHT);
         settings.zoom(zoom);
         updateSettingTable();
         updateFractal();
     }
 
-    public void move(Direction direction) {
+    public void moveCamera(Direction direction) {
         settings.addOffset(direction);
         updateSettingTable();
         updateFractal();
     }
 
-    public void move(int screenX, int screenY) {
+    public void moveCamera(int screenX, int screenY) {
         settings.move(screenX, screenY, FRACTAL_WIDTH, FRACTAL_HEIGHT);
         updateSettingTable();
         updateFractal();

@@ -22,26 +22,26 @@ public class MultibrotSetInputProcessor implements InputProcessor {
                 if (ctrlPressed) {
                     this.multibrotSet.moveSet(Direction.LEFT);
                 } else {
-                    this.multibrotSet.move(Direction.LEFT);
+                    this.multibrotSet.moveCamera(Direction.LEFT);
                 }
                 break;
             case Input.Keys.RIGHT:
                 if (ctrlPressed) {
                     this.multibrotSet.moveSet(Direction.RIGHT);
                 } else {
-                    this.multibrotSet.move(Direction.RIGHT);
+                    this.multibrotSet.moveCamera(Direction.RIGHT);
                 }
                 break;
             case Input.Keys.UP:
                 if (ctrlPressed) {
                 } else {
-                    this.multibrotSet.move(Direction.UP);
+                    this.multibrotSet.moveCamera(Direction.UP);
                 }
                 break;
             case Input.Keys.DOWN:
                 if (ctrlPressed) {
                 } else {
-                    this.multibrotSet.move(Direction.DOWN);
+                    this.multibrotSet.moveCamera(Direction.DOWN);
                 }
                 break;
             case Input.Keys.CONTROL_LEFT:
@@ -68,11 +68,11 @@ public class MultibrotSetInputProcessor implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (button == Input.Buttons.LEFT) {
-            this.multibrotSet.moveAndZoom(screenX, screenY, Zoom.IN);
+            this.multibrotSet.moveCameraAndZoom(screenX, screenY, Zoom.IN);
         } else if (button == Input.Buttons.RIGHT) {
-            this.multibrotSet.moveAndZoom(screenX, screenY, Zoom.OUT);
+            this.multibrotSet.moveCameraAndZoom(screenX, screenY, Zoom.OUT);
         } else if (button == Input.Buttons.MIDDLE) {
-            this.multibrotSet.move(screenX, screenY);
+            this.multibrotSet.moveCamera(screenX, screenY);
         }
         return false;
     }

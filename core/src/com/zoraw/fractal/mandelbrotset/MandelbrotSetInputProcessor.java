@@ -21,25 +21,25 @@ public class MandelbrotSetInputProcessor implements InputProcessor {
             case Input.Keys.LEFT:
                 if (ctrlPressed) {
                 } else {
-                    this.mandelbrotset.move(Direction.LEFT);
+                    this.mandelbrotset.moveCamera(Direction.LEFT);
                 }
                 break;
             case Input.Keys.RIGHT:
                 if (ctrlPressed) {
                 } else {
-                    this.mandelbrotset.move(Direction.RIGHT);
+                    this.mandelbrotset.moveCamera(Direction.RIGHT);
                 }
                 break;
             case Input.Keys.UP:
                 if (ctrlPressed) {
                 } else {
-                    this.mandelbrotset.move(Direction.UP);
+                    this.mandelbrotset.moveCamera(Direction.UP);
                 }
                 break;
             case Input.Keys.DOWN:
                 if (ctrlPressed) {
                 } else {
-                    this.mandelbrotset.move(Direction.DOWN);
+                    this.mandelbrotset.moveCamera(Direction.DOWN);
                 }
                 break;
             case Input.Keys.CONTROL_LEFT:
@@ -66,11 +66,11 @@ public class MandelbrotSetInputProcessor implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (button == Input.Buttons.LEFT) {
-            this.mandelbrotset.moveAndZoom(screenX, screenY, Zoom.IN);
+            this.mandelbrotset.moveCameraAndZoom(screenX, screenY, Zoom.IN);
         } else if (button == Input.Buttons.RIGHT) {
-            this.mandelbrotset.moveAndZoom(screenX, screenY, Zoom.OUT);
+            this.mandelbrotset.moveCameraAndZoom(screenX, screenY, Zoom.OUT);
         } else if (button == Input.Buttons.MIDDLE) {
-            this.mandelbrotset.move(screenX, screenY);
+            this.mandelbrotset.moveCamera(screenX, screenY);
         }
         return false;
     }

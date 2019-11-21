@@ -20,30 +20,30 @@ public class JuliaSetInputProcessor implements InputProcessor {
         switch (keycode) {
             case Input.Keys.LEFT:
                 if (ctrlPressed) {
-                    this.juliaSet.moveJulia(Direction.LEFT);
+                    this.juliaSet.moveSet(Direction.LEFT);
                 } else {
-                    this.juliaSet.move(Direction.LEFT);
+                    this.juliaSet.moveCamera(Direction.LEFT);
                 }
                 break;
             case Input.Keys.RIGHT:
                 if (ctrlPressed) {
-                    this.juliaSet.moveJulia(Direction.RIGHT);
+                    this.juliaSet.moveSet(Direction.RIGHT);
                 } else {
-                    this.juliaSet.move(Direction.RIGHT);
+                    this.juliaSet.moveCamera(Direction.RIGHT);
                 }
                 break;
             case Input.Keys.UP:
                 if (ctrlPressed) {
-                    this.juliaSet.moveJulia(Direction.UP);
+                    this.juliaSet.moveSet(Direction.UP);
                 } else {
-                    this.juliaSet.move(Direction.UP);
+                    this.juliaSet.moveCamera(Direction.UP);
                 }
                 break;
             case Input.Keys.DOWN:
                 if (ctrlPressed) {
-                    this.juliaSet.moveJulia(Direction.DOWN);
+                    this.juliaSet.moveSet(Direction.DOWN);
                 } else {
-                    this.juliaSet.move(Direction.DOWN);
+                    this.juliaSet.moveCamera(Direction.DOWN);
                 }
                 break;
             case Input.Keys.CONTROL_LEFT:
@@ -70,11 +70,11 @@ public class JuliaSetInputProcessor implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (button == Input.Buttons.LEFT) {
-            this.juliaSet.moveAndZoom(screenX, screenY, Zoom.IN);
+            this.juliaSet.moveCameraAndZoom(screenX, screenY, Zoom.IN);
         } else if (button == Input.Buttons.RIGHT) {
-            this.juliaSet.moveAndZoom(screenX, screenY, Zoom.OUT);
+            this.juliaSet.moveCameraAndZoom(screenX, screenY, Zoom.OUT);
         } else if (button == Input.Buttons.MIDDLE) {
-            this.juliaSet.move(screenX, screenY);
+            this.juliaSet.moveCamera(screenX, screenY);
         }
         return false;
     }
