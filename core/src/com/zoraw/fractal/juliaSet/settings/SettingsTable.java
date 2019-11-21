@@ -3,13 +3,13 @@ package com.zoraw.fractal.juliaSet.settings;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class SettingsTable extends Table {
 
     private final SettingsEmitter settingsEmitter;
 
-    public SettingsTable(ScreenViewport viewport) {
+    public SettingsTable(Viewport viewport) {
         this.setWidth(50);
         this.align(Align.right | Align.top);
         this.setPosition(viewport.getScreenWidth() - 50, viewport.getScreenHeight());

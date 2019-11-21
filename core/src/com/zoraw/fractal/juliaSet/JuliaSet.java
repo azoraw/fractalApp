@@ -11,11 +11,14 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zoraw.fractal.common.Direction;
 import com.zoraw.fractal.common.ProgressBarActor;
 import com.zoraw.fractal.common.Zoom;
-import com.zoraw.fractal.juliaSet.settings.*;
+import com.zoraw.fractal.juliaSet.settings.SaveButtonEvent;
+import com.zoraw.fractal.juliaSet.settings.Settings;
+import com.zoraw.fractal.juliaSet.settings.SettingsChangeEvent;
+import com.zoraw.fractal.juliaSet.settings.SettingsTable;
 
 import java.time.LocalDateTime;
 import java.util.zip.Deflater;
@@ -29,7 +32,7 @@ public class JuliaSet extends Group implements EventListener {
     private Sprite sprite;
     private ProgressBarActor progressBar = new ProgressBarActor();
 
-    public JuliaSet(ScreenViewport viewport) {
+    public JuliaSet(Viewport viewport) {
         this.addListener(this);
         this.FRACTAL_WIDTH = viewport.getScreenWidth();
         this.FRACTAL_HEIGHT = viewport.getScreenHeight();
@@ -39,6 +42,7 @@ public class JuliaSet extends Group implements EventListener {
         setBounds(sprite.getX(), sprite.getY(), FRACTAL_WIDTH, FRACTAL_HEIGHT);
         this.setWidth(FRACTAL_WIDTH);
         this.setHeight(FRACTAL_HEIGHT);
+        this.addActor(new SettingsTable(viewport));
     }
 
     @Override
