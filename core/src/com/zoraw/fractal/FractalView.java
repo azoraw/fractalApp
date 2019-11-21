@@ -106,17 +106,6 @@ public class FractalView extends Group implements EventListener {
         PixmapIO.writePNG(new FileHandle(getFileName()), pixmap, Deflater.NO_COMPRESSION, false);
     }
 
-    private String getFileName() {
-        return LocalDateTime.now().toString().replace(":", "_") +
-                "re" + settings.getComplexNumber().getRe() +
-                "im" + settings.getComplexNumber().getIm() +
-                "iteration" + settings.getNumberOfIteration() +
-                "r" + settings.getRMultiplier() +
-                "g" + settings.getGMultiplier() +
-                "b" + settings.getBMultiplier() +
-                ".png";
-    }
-
     @Override
     public boolean handle(Event event) {
         if (event instanceof SettingsChangeEvent) {
@@ -132,39 +121,6 @@ public class FractalView extends Group implements EventListener {
         return false;
     }
 
-    private synchronized void updateFractal() {
-        if(!progressBar.getIsShown().get()) {
-            progressBar.getIsShown().set(true);
-            this.addActor(progressBar.getProgressBar());
-            new Thread(() -> {
-                updatePixMap(FRACTAL_WIDTH, FRACTAL_HEIGHT);
-                Gdx.app.postRunnable(() -> {
-                    this.removeActor(progressBar.getProgressBar());
-                    progressBar.getProgressBar().setValue(0f);
-                    sprite = new Sprite(new Texture(pixmap));
-                    pixmap.dispose();
-                    progressBar.getIsShown().set(false);
-                });
-            }).start();
-        }
-    }
-
-    private synchronized void saveFractal(int width, int height) {
-        if(!progressBar.getIsShown().get()) {
-            progressBar.getIsShown().set(true);
-            this.addActor(progressBar.getProgressBar());
-            new Thread(() -> {
-                updatePixMap(width, height);
-                Gdx.app.postRunnable(() -> {
-                    this.removeActor(progressBar.getProgressBar());
-                    progressBar.getProgressBar().setValue(0f);
-                    saveToFile();
-                    progressBar.getIsShown().set(false);
-                });
-            }).start();
-        }
-    }
-
     public void zoom(Zoom zoom) {
         this.settings.zoom(zoom);
         updateSettingTable();
@@ -176,11 +132,6 @@ public class FractalView extends Group implements EventListener {
         settings.zoom(zoom);
         updateSettingTable();
         updateFractal();
-    }
-
-    private void updateSettingTable() {
-        SettingsTable settingsTable = (SettingsTable) this.getChild(0);
-        settingsTable.updateTextFields(settings);
     }
 
     public void move(Direction direction) {
@@ -199,5 +150,54 @@ public class FractalView extends Group implements EventListener {
         settings.moveJulia(left);
         updateSettingTable();
         updateFractal();
+    }
+
+    private void updateFractal() {
+        if (!progressBar.getIsShown().get()) {
+            progressBar.getIsShown().set(true);
+            this.addActor(progressBar.getProgressBar());
+            new Thread(() -> {
+                updatePixMap(FRACTAL_WIDTH, FRACTAL_HEIGHT);
+                Gdx.app.postRunnable(() -> {
+                    this.removeActor(progressBar.getProgressBar());
+                    progressBar.getProgressBar().setValue(0f);
+                    sprite = new Sprite(new Texture(pixmap));
+                    pixmap.dispose();
+                    progressBar.getIsShown().set(false);
+                });
+            }).start();
+        }
+    }
+
+    private void saveFractal(int width, int height) {
+        if (!progressBar.getIsShown().get()) {
+            progressBar.getIsShown().set(true);
+            this.addActor(progressBar.getProgressBar());
+            new Thread(() -> {
+                updatePixMap(width, height);
+                Gdx.app.postRunnable(() -> {
+                    this.removeActor(progressBar.getProgressBar());
+                    progressBar.getProgressBar().setValue(0f);
+                    saveToFile();
+                    progressBar.getIsShown().set(false);
+                });
+            }).start();
+        }
+    }
+
+    private void updateSettingTable() {
+        SettingsTable settingsTable = (SettingsTable) this.getChild(0);
+        settingsTable.updateTextFields(settings);
+    }
+
+    private String getFileName() {
+        return LocalDateTime.now().toString().replace(":", "_") +
+                "re" + settings.getComplexNumber().getRe() +
+                "im" + settings.getComplexNumber().getIm() +
+                "iteration" + settings.getNumberOfIteration() +
+                "r" + settings.getRMultiplier() +
+                "g" + settings.getGMultiplier() +
+                "b" + settings.getBMultiplier() +
+                ".png";
     }
 }
