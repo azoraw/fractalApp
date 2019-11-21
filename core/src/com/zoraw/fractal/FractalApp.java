@@ -9,7 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.zoraw.fractal.settings.SettingsTable;
+import com.zoraw.fractal.juliaSet.FractalInputProcessor;
+import com.zoraw.fractal.juliaSet.JuliaSet;
+import com.zoraw.fractal.juliaSet.settings.SettingsTable;
 
 public class FractalApp extends ApplicationAdapter {
 
@@ -20,12 +22,12 @@ public class FractalApp extends ApplicationAdapter {
         ScreenViewport viewport = new ScreenViewport();
         stage = new Stage(viewport);
         stage.getRoot().addCaptureListener(getSettingListener());
-        FractalView fractalView = new FractalView(viewport);
+        JuliaSet juliaSet = new JuliaSet(viewport);
         SettingsTable settingsTable = new SettingsTable(viewport);
-        Gdx.input.setInputProcessor(new InputMultiplexer(stage, new FractalInputProcessor(fractalView)));
-        fractalView.addActor(settingsTable);
-        stage.addActor(fractalView);
-        stage.setKeyboardFocus(fractalView);
+        Gdx.input.setInputProcessor(new InputMultiplexer(stage, new FractalInputProcessor(juliaSet)));
+        juliaSet.addActor(settingsTable);
+        stage.addActor(juliaSet);
+        stage.setKeyboardFocus(juliaSet);
     }
 
     private InputListener getSettingListener() {

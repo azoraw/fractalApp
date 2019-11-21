@@ -1,9 +1,9 @@
-package com.zoraw.fractal;
+package com.zoraw.fractal.juliaSet;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.zoraw.fractal.settings.Direction;
-import com.zoraw.fractal.settings.Zoom;
+import com.zoraw.fractal.common.Direction;
+import com.zoraw.fractal.common.Zoom;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class FractalInputProcessor implements InputProcessor {
 
-    private final FractalView fractalView;
+    private final JuliaSet juliaSet;
 
     private boolean ctrlPressed = false;
 
@@ -20,30 +20,30 @@ public class FractalInputProcessor implements InputProcessor {
         switch (keycode) {
             case Input.Keys.LEFT:
                 if (ctrlPressed) {
-                    this.fractalView.moveJulia(Direction.LEFT);
+                    this.juliaSet.moveJulia(Direction.LEFT);
                 } else {
-                    this.fractalView.move(Direction.LEFT);
+                    this.juliaSet.move(Direction.LEFT);
                 }
                 break;
             case Input.Keys.RIGHT:
                 if (ctrlPressed) {
-                    this.fractalView.moveJulia(Direction.RIGHT);
+                    this.juliaSet.moveJulia(Direction.RIGHT);
                 } else {
-                    this.fractalView.move(Direction.RIGHT);
+                    this.juliaSet.move(Direction.RIGHT);
                 }
                 break;
             case Input.Keys.UP:
                 if (ctrlPressed) {
-                    this.fractalView.moveJulia(Direction.UP);
+                    this.juliaSet.moveJulia(Direction.UP);
                 } else {
-                    this.fractalView.move(Direction.UP);
+                    this.juliaSet.move(Direction.UP);
                 }
                 break;
             case Input.Keys.DOWN:
                 if (ctrlPressed) {
-                    this.fractalView.moveJulia(Direction.DOWN);
+                    this.juliaSet.moveJulia(Direction.DOWN);
                 } else {
-                    this.fractalView.move(Direction.DOWN);
+                    this.juliaSet.move(Direction.DOWN);
                 }
                 break;
             case Input.Keys.CONTROL_LEFT:
@@ -70,11 +70,11 @@ public class FractalInputProcessor implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (button == Input.Buttons.LEFT) {
-            this.fractalView.moveAndZoom(screenX, screenY, Zoom.IN);
+            this.juliaSet.moveAndZoom(screenX, screenY, Zoom.IN);
         } else if (button == Input.Buttons.RIGHT) {
-            this.fractalView.moveAndZoom(screenX, screenY, Zoom.OUT);
+            this.juliaSet.moveAndZoom(screenX, screenY, Zoom.OUT);
         } else if (button == Input.Buttons.MIDDLE) {
-            this.fractalView.move(screenX, screenY);
+            this.juliaSet.move(screenX, screenY);
         }
         return false;
     }
@@ -96,7 +96,7 @@ public class FractalInputProcessor implements InputProcessor {
 
     @Override
     public boolean scrolled(int amount) {
-        this.fractalView.zoom(amount < 0 ? Zoom.IN : Zoom.OUT);
+        this.juliaSet.zoom(amount < 0 ? Zoom.IN : Zoom.OUT);
         return false;
     }
 }

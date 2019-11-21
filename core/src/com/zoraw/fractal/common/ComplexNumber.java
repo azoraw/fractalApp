@@ -1,4 +1,4 @@
-package com.zoraw.fractal.settings;
+package com.zoraw.fractal.common;
 
 import lombok.Value;
 

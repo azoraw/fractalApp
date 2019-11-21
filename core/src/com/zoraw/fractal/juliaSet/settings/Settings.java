@@ -1,5 +1,8 @@
-package com.zoraw.fractal.settings;
+package com.zoraw.fractal.juliaSet.settings;
 
+import com.zoraw.fractal.common.ComplexNumber;
+import com.zoraw.fractal.common.Direction;
+import com.zoraw.fractal.common.Zoom;
 import lombok.Builder;
 import lombok.Getter;
 

@@ -1,8 +1,9 @@
-package com.zoraw.fractal.settings;
+package com.zoraw.fractal.juliaSet.settings;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.zoraw.fractal.common.ComplexNumber;
 import lombok.Builder;
 
 @Builder

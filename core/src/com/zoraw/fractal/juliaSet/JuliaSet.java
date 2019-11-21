@@ -1,4 +1,4 @@
-package com.zoraw.fractal;
+package com.zoraw.fractal.juliaSet;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -12,12 +12,15 @@ import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.zoraw.fractal.settings.*;
+import com.zoraw.fractal.common.Direction;
+import com.zoraw.fractal.common.ProgressBarActor;
+import com.zoraw.fractal.common.Zoom;
+import com.zoraw.fractal.juliaSet.settings.*;
 
 import java.time.LocalDateTime;
 import java.util.zip.Deflater;
 
-public class FractalView extends Group implements EventListener {
+public class JuliaSet extends Group implements EventListener {
 
     private final int FRACTAL_WIDTH;
     private final int FRACTAL_HEIGHT;
@@ -26,7 +29,7 @@ public class FractalView extends Group implements EventListener {
     private Sprite sprite;
     private ProgressBarActor progressBar = new ProgressBarActor();
 
-    public FractalView(ScreenViewport viewport) {
+    public JuliaSet(ScreenViewport viewport) {
         this.addListener(this);
         this.FRACTAL_WIDTH = viewport.getScreenWidth();
         this.FRACTAL_HEIGHT = viewport.getScreenHeight();

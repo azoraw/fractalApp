@@ -1,4 +1,4 @@
-package com.zoraw.fractal;
+package com.zoraw.fractal.common;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -14,10 +14,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static com.badlogic.gdx.scenes.scene2d.ui.ProgressBar.*;
 
 @Getter
-@Setter
 public class ProgressBarActor {
 
     private ProgressBar progressBar = createProgressBar();
+
+    @Setter
     private AtomicBoolean isShown = new AtomicBoolean(false);
 
     private ProgressBar createProgressBar() {
