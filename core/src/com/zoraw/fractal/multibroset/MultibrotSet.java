@@ -1,4 +1,4 @@
-package com.zoraw.fractal.mandelbrotset;
+package com.zoraw.fractal.multibroset;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -16,15 +16,17 @@ import com.zoraw.fractal.common.Direction;
 import com.zoraw.fractal.common.FractalActor;
 import com.zoraw.fractal.common.ProgressBarActor;
 import com.zoraw.fractal.common.Zoom;
-import com.zoraw.fractal.mandelbrotset.settings.SaveButtonEvent;
-import com.zoraw.fractal.mandelbrotset.settings.Settings;
-import com.zoraw.fractal.mandelbrotset.settings.SettingsChangeEvent;
-import com.zoraw.fractal.mandelbrotset.settings.SettingsTable;
+import com.zoraw.fractal.multibroset.settings.SaveButtonEvent;
+import com.zoraw.fractal.multibroset.settings.Settings;
+import com.zoraw.fractal.multibroset.settings.SettingsChangeEvent;
+import com.zoraw.fractal.multibroset.settings.SettingsTable;
 
 import java.time.LocalDateTime;
 import java.util.zip.Deflater;
 
-public class MandelbrotSet extends FractalActor implements EventListener {
+import static java.lang.Math.*;
+
+public class MultibrotSet extends FractalActor implements EventListener {
 
     private final int FRACTAL_WIDTH;
     private final int FRACTAL_HEIGHT;
@@ -33,7 +35,7 @@ public class MandelbrotSet extends FractalActor implements EventListener {
     private Sprite sprite;
     private ProgressBarActor progressBar = new ProgressBarActor();
 
-    public MandelbrotSet(Viewport viewport) {
+    public MultibrotSet(Viewport viewport) {
         this.addListener(this);
         this.FRACTAL_WIDTH = viewport.getScreenWidth();
         this.FRACTAL_HEIGHT = viewport.getScreenHeight();
@@ -58,10 +60,11 @@ public class MandelbrotSet extends FractalActor implements EventListener {
         tmpPixmap.setColor(Color.BLACK);
         tmpPixmap.fill();
         tmpPixmap.setBlending(Pixmap.Blending.None);
-
+        double pow, atan2;
         double xOffset = tmpSettings.getXOffset();
         double yOffset = tmpSettings.getYOffset();
         double zoom = tmpSettings.getZoom();
+        double multibrotPower = tmpSettings.getMultibrotPower().getRe();
         float percent = width * (float) height;
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -73,8 +76,10 @@ public class MandelbrotSet extends FractalActor implements EventListener {
                 double nextRe, nextIm;
                 int p;
                 for (p = 0; p < tmpSettings.getNumberOfIteration(); p++) {
-                    nextRe = prevRe * prevRe - prevIm * prevIm + re;
-                    nextIm = 2 * prevRe * prevIm + im;
+                    pow = pow((prevRe * prevRe + prevIm * prevIm), (multibrotPower/2));
+                    atan2 = atan2(prevIm, prevRe);
+                    nextRe = pow * cos(multibrotPower * atan2) + re;
+                    nextIm = pow * sin(multibrotPower * atan2) + im;
                     if (nextRe * nextRe + nextIm * nextIm > 4) {
                         break;
                     }
@@ -93,7 +98,6 @@ public class MandelbrotSet extends FractalActor implements EventListener {
         }
         this.pixmap = tmpPixmap;
     }
-
 
     private float getRgbPart(Settings settings, int p, int multiplier) {
         float v = (float) (p * multiplier) / settings.getNumberOfIteration();
@@ -146,6 +150,12 @@ public class MandelbrotSet extends FractalActor implements EventListener {
         updateFractal();
     }
 
+    public void moveJulia(Direction left) {
+        settings.moveJulia(left);
+        updateSettingTable();
+        updateFractal();
+    }
+
     private void updateFractal() {
         if (!progressBar.getIsShown().get()) {
             progressBar.getIsShown().set(true);
@@ -186,6 +196,8 @@ public class MandelbrotSet extends FractalActor implements EventListener {
 
     private String getFileName() {
         return LocalDateTime.now().toString().replace(":", "_") +
+                "re" + settings.getMultibrotPower().getRe() +
+                "im" + settings.getMultibrotPower().getIm() +
                 "iteration" + settings.getNumberOfIteration() +
                 "r" + settings.getRMultiplier() +
                 "g" + settings.getGMultiplier() +
@@ -195,6 +207,6 @@ public class MandelbrotSet extends FractalActor implements EventListener {
 
     @Override
     public InputProcessor getInputProcessor() {
-        return new MandelbrotSetInputProcessor(this);
+        return new MultibrotSetInputProcessor(this);
     }
 }

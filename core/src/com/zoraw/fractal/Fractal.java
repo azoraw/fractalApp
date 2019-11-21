@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.zoraw.fractal.common.FractalActor;
 import com.zoraw.fractal.juliaset.JuliaSet;
 import com.zoraw.fractal.mandelbrotset.MandelbrotSet;
+import com.zoraw.fractal.multibroset.MultibrotSet;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -15,7 +16,8 @@ import java.util.function.Function;
 @Getter
 public enum Fractal {
     JULIA_SET("Julia set", JuliaSet::new),
-    MANDELBROT_SET("Mandelbrot set", MandelbrotSet::new);
+    MANDELBROT_SET("Mandelbrot set", MandelbrotSet::new),
+    MULTIBROT_SET("Multibrot set", MultibrotSet::new);
 
     private final String fractalName;
     private final Function<Viewport, FractalActor> supplier;
