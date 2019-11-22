@@ -38,9 +38,8 @@ public class MandelbrotSet extends FractalActor implements EventListener {
         this.FRACTAL_WIDTH = viewport.getScreenWidth();
         this.FRACTAL_HEIGHT = viewport.getScreenHeight();
         settings = Settings.getInitialSettings();
-        updatePixMap(FRACTAL_WIDTH, FRACTAL_HEIGHT);
-        sprite = new Sprite(new Texture(pixmap));
-        setBounds(sprite.getX(), sprite.getY(), FRACTAL_WIDTH, FRACTAL_HEIGHT);
+        updateFractal();
+        setBounds(0, 0, FRACTAL_WIDTH, FRACTAL_HEIGHT);
         this.setWidth(FRACTAL_WIDTH);
         this.setHeight(FRACTAL_HEIGHT);
         this.addActor(new SettingsTable(viewport));
@@ -48,7 +47,9 @@ public class MandelbrotSet extends FractalActor implements EventListener {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        sprite.draw(batch);
+        if (sprite != null) {
+            sprite.draw(batch);
+        }
         this.drawChildren(batch, parentAlpha);
     }
 

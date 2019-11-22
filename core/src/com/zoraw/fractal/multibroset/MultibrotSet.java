@@ -40,9 +40,8 @@ public class MultibrotSet extends FractalActor implements EventListener {
         this.FRACTAL_WIDTH = viewport.getScreenWidth();
         this.FRACTAL_HEIGHT = viewport.getScreenHeight();
         settings = Settings.getInitialSettings();
-        updatePixMap(FRACTAL_WIDTH, FRACTAL_HEIGHT);
-        sprite = new Sprite(new Texture(pixmap));
-        setBounds(sprite.getX(), sprite.getY(), FRACTAL_WIDTH, FRACTAL_HEIGHT);
+        updateFractal();
+        setBounds(0, 0, FRACTAL_WIDTH, FRACTAL_HEIGHT);
         this.setWidth(FRACTAL_WIDTH);
         this.setHeight(FRACTAL_HEIGHT);
         this.addActor(new SettingsTable(viewport));
@@ -50,7 +49,9 @@ public class MultibrotSet extends FractalActor implements EventListener {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        sprite.draw(batch);
+        if (sprite != null) {
+            sprite.draw(batch);
+        }
         this.drawChildren(batch, parentAlpha);
     }
 
@@ -76,7 +77,7 @@ public class MultibrotSet extends FractalActor implements EventListener {
                 double nextRe, nextIm;
                 int p;
                 for (p = 0; p < tmpSettings.getNumberOfIteration(); p++) {
-                    pow = pow((prevRe * prevRe + prevIm * prevIm), (multibrotPower/2));
+                    pow = pow((prevRe * prevRe + prevIm * prevIm), (multibrotPower / 2));
                     atan2 = atan2(prevIm, prevRe);
                     nextRe = pow * cos(multibrotPower * atan2) + re;
                     nextIm = pow * sin(multibrotPower * atan2) + im;

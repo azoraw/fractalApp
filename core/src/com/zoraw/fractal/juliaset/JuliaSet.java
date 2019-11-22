@@ -38,9 +38,8 @@ public class JuliaSet extends FractalActor implements EventListener {
         this.FRACTAL_WIDTH = viewport.getScreenWidth();
         this.FRACTAL_HEIGHT = viewport.getScreenHeight();
         settings = Settings.getInitialSettings();
-        updatePixMap(FRACTAL_WIDTH, FRACTAL_HEIGHT);
-        sprite = new Sprite(new Texture(pixmap));
-        setBounds(sprite.getX(), sprite.getY(), FRACTAL_WIDTH, FRACTAL_HEIGHT);
+        updateFractal();
+        setBounds(0, 0, FRACTAL_WIDTH, FRACTAL_HEIGHT);
         this.setWidth(FRACTAL_WIDTH);
         this.setHeight(FRACTAL_HEIGHT);
         this.addActor(new SettingsTable(viewport));
@@ -48,7 +47,9 @@ public class JuliaSet extends FractalActor implements EventListener {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        sprite.draw(batch);
+        if (sprite != null) {
+            sprite.draw(batch);
+        }
         this.drawChildren(batch, parentAlpha);
     }
 
@@ -93,14 +94,7 @@ public class JuliaSet extends FractalActor implements EventListener {
                 tmpPixmap.drawPixel(x, y, color);
             }
         }
-        drawDebugCircle(tmpPixmap);
         this.pixmap = tmpPixmap;
-    }
-
-    private void drawDebugCircle(Pixmap tmpPixmap) {
-        tmpPixmap.setColor(Color.RED);
-        tmpPixmap.drawCircle(FRACTAL_WIDTH / 2, FRACTAL_HEIGHT / 2, 50);
-        tmpPixmap.drawCircle(FRACTAL_WIDTH / 2, FRACTAL_HEIGHT / 2, 5);
     }
 
     private float getRgbPart(Settings settings, int p, int multiplier) {
