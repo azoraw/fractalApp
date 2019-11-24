@@ -24,7 +24,7 @@ public class ProgressBarActor {
     private ProgressBar createProgressBar() {
         ProgressBar progressBar = new ProgressBar(0.0f, 1.0f, 0.01f, false, createSkin());
         progressBar.setValue(0f);
-        progressBar.setAnimateDuration(0.1f);
+        progressBar.setAnimateDuration(0.5f);
         progressBar.setBounds(10, 10, 1000, 200);
         return progressBar;
     }
