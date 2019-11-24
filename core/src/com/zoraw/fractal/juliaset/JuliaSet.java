@@ -72,7 +72,7 @@ public class JuliaSet extends FractalActor implements EventListener {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 progressBar.getProgressBar().setValue((x * height + y) / percent);
-                double nextRe = 1.5 * (x - (double) width / 2) / (width * 0.5 * zoom) - xOffset;
+                double nextRe = width / (float) height * (x - (double) width / 2) / (width * 0.5 * zoom) - xOffset;
                 double nextIm = (y - (double) height / 2) / (height * 0.5 * zoom) - yOffset;
                 int p;
                 for (p = 0; p < settings.getNumberOfIteration(); p++) {

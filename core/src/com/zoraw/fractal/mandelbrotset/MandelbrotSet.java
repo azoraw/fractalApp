@@ -67,7 +67,7 @@ public class MandelbrotSet extends FractalActor implements EventListener {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 progressBar.getProgressBar().setValue((x * height + y) / percent);
-                double re = 2 * (x - (double) width / 2) / (width * 0.5 * zoom) - xOffset;
+                double re = width / (float) height * (x - (double) width / 2) / (width * 0.5 * zoom) - xOffset;
                 double im = (y - (double) height / 2) / (height * 0.5 * zoom) - yOffset;
                 double prevRe = 0;
                 double prevIm = 0;
