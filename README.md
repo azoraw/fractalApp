@@ -2,7 +2,7 @@
 
 Simple application for exploring 2d fractals / generate wall papers. 
 
-##Controls:
+## Controls:
 
 - zoom in: Left click
 - zoom out: Right click
