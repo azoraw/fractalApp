@@ -1,7 +1,7 @@
 # fractalApp
 
 Simple application for exploring 2d fractals / generate wall papers. 
-Feel free to download current release and test it for yourself :)
+Feel free to download [current release](FractalApp-1.0.0.zip) and test it for yourself :)
 
 ## Controls:
 
