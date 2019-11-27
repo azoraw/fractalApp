@@ -10,8 +10,6 @@ buildscript {
     }
     dependencies {
         classpath 'org.wisepersist:gwt-gradle-plugin:1.0.9'
-        
-
     }
 }
 
@@ -51,7 +49,6 @@ project(":desktop") {
 
 project(":core") {
     apply plugin: "java-library"
-
 
     dependencies {
         compileOnly 'org.projectlombok:lombok:1.18.10'
