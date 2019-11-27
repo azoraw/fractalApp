@@ -67,10 +67,12 @@ public class MultibrotSet extends FractalActor implements EventListener {
         double zoom = tmpSettings.getZoom();
         double multibrotPower = tmpSettings.getMultibrotPower().getRe();
         float percent = width * (float) height;
+        float resolutionShapeAdjustment = width / (float) height;
+
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 progressBar.getProgressBar().setValue((x * height + y) / percent);
-                double re = width / (float) height * (x - (double) width / 2) / (width * 0.5 * zoom) - xOffset;
+                double re = resolutionShapeAdjustment * (x - (double) width / 2) / (width * 0.5 * zoom) - xOffset;
                 double im = (y - (double) height / 2) / (height * 0.5 * zoom) - yOffset;
                 double prevRe = 0;
                 double prevIm = 0;
