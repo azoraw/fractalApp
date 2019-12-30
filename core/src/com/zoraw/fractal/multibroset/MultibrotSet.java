@@ -160,8 +160,8 @@ public class MultibrotSet extends FractalActor implements EventListener {
     }
 
     private void updateFractal() {
-        if (!progressBar.getIsShown().get()) {
-            progressBar.getIsShown().set(true);
+        if (!progressBar.isShown()) {
+            progressBar.setShown(true);
             this.addActor(progressBar.getProgressBar());
             new Thread(() -> {
                 updatePixMap(FRACTAL_WIDTH, FRACTAL_HEIGHT);
@@ -170,15 +170,15 @@ public class MultibrotSet extends FractalActor implements EventListener {
                     progressBar.getProgressBar().setValue(0f);
                     sprite = new Sprite(new Texture(pixmap));
                     pixmap.dispose();
-                    progressBar.getIsShown().set(false);
+                    progressBar.setShown(false);
                 });
             }).start();
         }
     }
 
     private void saveFractal(int width, int height) {
-        if (!progressBar.getIsShown().get()) {
-            progressBar.getIsShown().set(true);
+        if (!progressBar.isShown()) {
+            progressBar.setShown(true);
             this.addActor(progressBar.getProgressBar());
             new Thread(() -> {
                 updatePixMap(width, height);
@@ -186,7 +186,7 @@ public class MultibrotSet extends FractalActor implements EventListener {
                     this.removeActor(progressBar.getProgressBar());
                     progressBar.getProgressBar().setValue(0f);
                     saveToFile();
-                    progressBar.getIsShown().set(false);
+                    progressBar.setShown(false);
                 });
             }).start();
         }
