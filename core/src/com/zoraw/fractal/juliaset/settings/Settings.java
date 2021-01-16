@@ -24,12 +24,12 @@ public class Settings {
 
     public static Settings getInitialSettings() {
         return Settings.builder()
-                .numberOfIteration(3000)
+                .numberOfIteration(1000)
                 .rMultiplier(0)
-                .gMultiplier(1)
+                .gMultiplier(13)
                 .bMultiplier(13)
-                .complexNumber(new ComplexNumber(-0.7, 0.27015))
-                .moveDelta(0.02)
+                .complexNumber(new ComplexNumber(-0.01994, 0.88634))
+                .moveDelta(0.002)
                 .xOffset(0)
                 .yOffset(0)
                 .zoom(1)

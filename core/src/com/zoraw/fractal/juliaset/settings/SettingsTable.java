@@ -47,6 +47,13 @@ public class SettingsTable extends Table {
         TextField zoomMultiplierTextField = new TextField(String.valueOf(initSettings.getZoomMultiplier()), skin);
         Button saveButton = new TextButton("save to png", skin);
         saveButton.addListener(new SaveButtonListener(this, widthTextField, heightTextField));
+
+
+        Label animateLabel = new Label("number of frames: ", skin);
+        TextField animateTextField = new TextField(String.valueOf(100), skin);
+
+        Button animateButton = new TextButton("animate", skin);
+        animateButton.addListener(new AnimateButtonListener(this, widthTextField, heightTextField, animateTextField));
         Button generateButton = new TextButton("save settings", skin);
         settingsEmitter = SettingsEmitter.builder()
                 .re(initRe)
@@ -109,6 +116,12 @@ public class SettingsTable extends Table {
         this.row();
         this.add(emptyLabel);
         this.add(saveButton);
+        this.row();
+        this.add(animateLabel);
+        this.add(animateTextField);
+        this.row();
+        this.add(emptyLabel);
+        this.add(animateButton);
     }
 
     public void updateTextFields(Settings settings) {
