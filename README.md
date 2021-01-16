@@ -20,10 +20,6 @@ Execute in command line:
 - move camera: arrows
 - (Optional) move fractal starting point: ctrl + arrows  
 
-
-# DEV
-## create jar 
-
-gradlew desktop:dist 
+# Screens
 
 ![julia set example](https://user-images.githubusercontent.com/26636050/104812586-7a018c00-5803-11eb-84e9-aebc71047e62.png)
