@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.zoraw.fractal.juliaset.settings.animation.AnimateButtonListener;
 
 public class SettingsTable extends Table {
 
@@ -53,7 +54,13 @@ public class SettingsTable extends Table {
         TextField animateTextField = new TextField(String.valueOf(100), skin);
 
         Button animateButton = new TextButton("animate", skin);
-        animateButton.addListener(new AnimateButtonListener(this, widthTextField, heightTextField, animateTextField));
+        animateButton.addListener(AnimateButtonListener.builder()
+                .settingsTable(this)
+                .width(widthTextField)
+                .height(heightTextField)
+                .numberOfFrames(animateTextField)
+                .build());
+
         Button generateButton = new TextButton("save settings", skin);
         settingsEmitter = SettingsEmitter.builder()
                 .re(initRe)

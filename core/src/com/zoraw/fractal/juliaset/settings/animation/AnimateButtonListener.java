@@ -1,8 +1,10 @@
-package com.zoraw.fractal.juliaset.settings;
+package com.zoraw.fractal.juliaset.settings.animation;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.zoraw.fractal.juliaset.settings.SettingsTable;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 @Builder

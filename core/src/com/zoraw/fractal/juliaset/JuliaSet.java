@@ -17,6 +17,7 @@ import com.zoraw.fractal.common.FractalActor;
 import com.zoraw.fractal.common.ProgressBarActor;
 import com.zoraw.fractal.common.Zoom;
 import com.zoraw.fractal.juliaset.settings.*;
+import com.zoraw.fractal.juliaset.settings.animation.AnimateButtonEvent;
 
 import java.util.zip.Deflater;
 
@@ -24,16 +25,22 @@ public class JuliaSet extends FractalActor implements EventListener {
 
     private final int FRACTAL_WIDTH;
     private final int FRACTAL_HEIGHT;
-    private Pixmap pixmap;
+    private final JuliaSetDrawer juliaSetDrawer;
+    private final ProgressBarActor progressBar = new ProgressBarActor();
     private Settings settings;
     private Sprite sprite;
-    private ProgressBarActor progressBar = new ProgressBarActor();
     private int animationCounter = 0;
 
     public JuliaSet(Viewport viewport) {
         this.addListener(this);
-        this.FRACTAL_WIDTH = viewport.getScreenWidth();
-        this.FRACTAL_HEIGHT = viewport.getScreenHeight();
+        FRACTAL_WIDTH = viewport.getScreenWidth();
+        FRACTAL_HEIGHT = viewport.getScreenHeight();
+
+        juliaSetDrawer = JuliaSetDrawer.builder()
+                .FRACTAL_WIDTH(FRACTAL_WIDTH)
+                .FRACTAL_HEIGHT(FRACTAL_HEIGHT)
+                .build();
+
         settings = Settings.getInitialSettings();
         updateFractal();
         setBounds(0, 0, FRACTAL_WIDTH, FRACTAL_HEIGHT);
@@ -47,62 +54,10 @@ public class JuliaSet extends FractalActor implements EventListener {
         if (sprite != null) {
             sprite.draw(batch);
         }
-        this.drawChildren(batch, parentAlpha);
-    }
-
-    private void updatePixMap(int width, int height) {
-        Settings tmpSettings = settings.copy();
-        Pixmap tmpPixmap = new Pixmap(width, height, Pixmap.Format.RGBA8888);
-        tmpPixmap.setColor(Color.BLACK);
-        tmpPixmap.fill();
-        tmpPixmap.setBlending(Pixmap.Blending.None);
-
-        double cRe = tmpSettings.getComplexNumber().getRe();
-        double cIm = tmpSettings.getComplexNumber().getIm();
-
-        double prevRe;
-        double prevIm;
-        double xOffset = tmpSettings.getXOffset();
-        double yOffset = tmpSettings.getYOffset();
-        double zoom = tmpSettings.getZoom();
-        float percent = width * (float) height;
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                progressBar.getProgressBar().setValue((x * height + y) / percent);
-                double nextRe = width / (float) height * (x - (double) width / 2) / (width * 0.5 * zoom) - xOffset;
-                double nextIm = (y - (double) height / 2) / (height * 0.5 * zoom) - yOffset;
-                int p;
-                for (p = 0; p < settings.getNumberOfIteration(); p++) {
-                    prevRe = nextRe;
-                    prevIm = nextIm;
-                    nextRe = prevRe * prevRe - prevIm * prevIm + cRe;
-                    nextIm = 2 * prevRe * prevIm + cIm;
-                    if ((nextRe * nextRe + nextIm * nextIm) > 4) {
-                        break;
-                    }
-                }
-                int color = Color.rgba8888(getRgbPart(tmpSettings, p, tmpSettings.getRMultiplier()),
-                        getRgbPart(tmpSettings, p, tmpSettings.getGMultiplier()),
-                        getRgbPart(tmpSettings, p, tmpSettings.getBMultiplier()),
-                        1);
-                if (p == 0) {
-                    color = Color.rgba8888(Color.BLACK);
-                }
-                tmpPixmap.drawPixel(x, y, color);
-            }
+        if (progressBar.isShown()) {
+            progressBar.getProgressBar().setValue(juliaSetDrawer.progress);
         }
-        this.pixmap = tmpPixmap;
-    }
-
-    private float getRgbPart(Settings settings, int p, int multiplier) {
-        float v = (float) (p * multiplier) / settings.getNumberOfIteration();
-        return v - (int) v;
-    }
-
-    public void saveToFile() {
-        pixmap.setFilter(Pixmap.Filter.NearestNeighbour);
-        pixmap.setColor(Color.BLACK);
-        PixmapIO.writePNG(new FileHandle(getFileName()), pixmap, Deflater.NO_COMPRESSION, false);
+        this.drawChildren(batch, parentAlpha);
     }
 
     @Override
@@ -113,8 +68,7 @@ public class JuliaSet extends FractalActor implements EventListener {
             return true;
         }
         if (event instanceof SaveButtonEvent) {
-            SaveButtonEvent saveButtonEvent = (SaveButtonEvent) event;
-            saveFractal(saveButtonEvent.getWidth(), saveButtonEvent.getHeight());
+            saveFractal();
             return true;
         }
         if (event instanceof AnimateButtonEvent) {
@@ -132,21 +86,23 @@ public class JuliaSet extends FractalActor implements EventListener {
             animateInDirection(animateButtonEvent, Direction.DOWN);
             animateInDirection(animateButtonEvent, Direction.LEFT);
             animateInDirection(animateButtonEvent, Direction.UP);
-            Gdx.app.postRunnable(() -> {
-                sprite = new Sprite(new Texture(pixmap));
-                pixmap.dispose();
-            });
         }).start();
     }
 
     private void animateInDirection(AnimateButtonEvent animateButtonEvent, Direction direction) {
         for (int i = 0; i < animateButtonEvent.getNumberOfFrames(); i++) {
-            updatePixMap(FRACTAL_WIDTH, FRACTAL_HEIGHT);
-            saveToFile();
+            Pixmap pixmap = juliaSetDrawer.getPixMap(settings.copy());
+            saveToFile(pixmap);
+            pixmap.dispose();
             settings.moveJulia(direction);
         }
     }
 
+    private void saveToFile(Pixmap pixmap) {
+        pixmap.setFilter(Pixmap.Filter.NearestNeighbour);
+        pixmap.setColor(Color.BLACK);
+        PixmapIO.writePNG(new FileHandle(getFileName()), pixmap, Deflater.NO_COMPRESSION, false);
+    }
     public void zoom(Zoom zoom) {
         this.settings.zoom(zoom);
         updateSettingTable();
@@ -183,32 +139,33 @@ public class JuliaSet extends FractalActor implements EventListener {
             progressBar.setShown(true);
             this.addActor(progressBar.getProgressBar());
             new Thread(() -> {
-                updatePixMap(FRACTAL_WIDTH, FRACTAL_HEIGHT);
+                Pixmap pixmap = juliaSetDrawer.getPixMap(settings.copy());
                 Gdx.app.postRunnable(() -> {
-                    this.removeActor(progressBar.getProgressBar());
-                    progressBar.getProgressBar().setValue(0f);
                     sprite = new Sprite(new Texture(pixmap));
-                    pixmap.dispose();
-                    progressBar.setShown(false);
+                    cleanAfterProcessing(pixmap);
                 });
             }).start();
         }
     }
 
-    private void saveFractal(int width, int height) {
+    private void saveFractal() {
         if (!progressBar.isShown()) {
             progressBar.setShown(true);
             this.addActor(progressBar.getProgressBar());
             new Thread(() -> {
-                updatePixMap(width, height);
+                Pixmap pixmap = juliaSetDrawer.getPixMap(settings.copy());
                 Gdx.app.postRunnable(() -> {
-                    this.removeActor(progressBar.getProgressBar());
-                    progressBar.getProgressBar().setValue(0f);
-                    saveToFile();
-                    progressBar.setShown(false);
+                    saveToFile(pixmap);
+                    cleanAfterProcessing(pixmap);
                 });
             }).start();
         }
+    }
+
+    private void cleanAfterProcessing(Pixmap pixmap) {
+        this.removeActor(progressBar.getProgressBar());
+        pixmap.dispose();
+        progressBar.setShown(false);
     }
 
     private void updateSettingTable() {
