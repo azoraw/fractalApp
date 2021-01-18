@@ -21,13 +21,13 @@ public class FractalChanger {
         this.stage = stage;
         stage.getRoot().addCaptureListener(getSettingListener());
         FractalActor currentFractal = Fractal.getInitial().createInstance(stage.getViewport());
-        GeneralSettings generalSettings = createGeneralSettings(Fractal.getInitial(), stage);
+        ChangeFractalSettings changeFractalSettings = createGeneralSettings(Fractal.getInitial(), stage);
         currentFractalInputProcessor = currentFractal.getInputProcessor();
         inputMultiplexer = new InputMultiplexer(stage, currentFractalInputProcessor);
         Gdx.input.setInputProcessor(inputMultiplexer);
         stage.addActor(currentFractal);
         stage.setKeyboardFocus(currentFractal);
-        stage.addActor(generalSettings);
+        stage.addActor(changeFractalSettings);
     }
 
     public void changeFractal(Fractal fractal) {
@@ -39,8 +39,8 @@ public class FractalChanger {
         stage.addActor(createGeneralSettings(fractal, stage));
     }
 
-    private GeneralSettings createGeneralSettings(Fractal fractal, Stage stage) {
-        return new GeneralSettings(stage.getViewport(), this, fractal.getFractalName());
+    private ChangeFractalSettings createGeneralSettings(Fractal fractal, Stage stage) {
+        return new ChangeFractalSettings(stage.getViewport(), this, fractal.getFractalName());
     }
 
     private InputListener getSettingListener() {

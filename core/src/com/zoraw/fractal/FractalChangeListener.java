@@ -7,10 +7,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 public class FractalChangeListener implements EventListener {
 
-    private final GeneralSettings generalSettings;
+    private final ChangeFractalSettings changeFractalSettings;
 
-    public FractalChangeListener(GeneralSettings generalSettings) {
-        this.generalSettings = generalSettings;
+    public FractalChangeListener(ChangeFractalSettings changeFractalSettings) {
+        this.changeFractalSettings = changeFractalSettings;
     }
 
     @Override
@@ -18,7 +18,7 @@ public class FractalChangeListener implements EventListener {
         if (event instanceof ChangeListener.ChangeEvent) {
             ChangeListener.ChangeEvent change = (ChangeListener.ChangeEvent) event;
             String selectedFractal = (String) ((SelectBox) change.getListenerActor()).getSelection().getLastSelected();
-            this.generalSettings.changeFractal(Fractal.fromString(selectedFractal));
+            this.changeFractalSettings.changeFractal(Fractal.fromString(selectedFractal));
             return false;
         }
         return true;

@@ -9,8 +9,7 @@ public class DesktopLauncher {
     public static void main(String[] arg) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.setFromDisplayMode(LwjglApplicationConfiguration.getDesktopDisplayMode());
-        config.fullscreen = false;
-        config.resizable = false;
+        config.fullscreen = true;
         new LwjglApplication(new FractalApp(), config);
     }
 }

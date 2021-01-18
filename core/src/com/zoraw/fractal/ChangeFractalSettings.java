@@ -5,11 +5,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class GeneralSettings extends Table {
+public class ChangeFractalSettings extends Table {
 
     private final FractalChanger fractalChanger;
 
-    public GeneralSettings(Viewport viewport, FractalChanger fractalChanger, String fractalName) {
+    public ChangeFractalSettings(Viewport viewport, FractalChanger fractalChanger, String fractalName) {
         this.fractalChanger = fractalChanger;
         this.setWidth(50);
         this.align(Align.left | Align.top);
@@ -20,11 +20,7 @@ public class GeneralSettings extends Table {
         selectBox.setSelected(fractalName);
         selectBox.addListener(new FractalChangeListener(this));
 
-        TextButton fullscreenButton = new TextButton(Gdx.graphics.isFullscreen() ? "windowed mode" : "fullscreen mode", skin);
-        fullscreenButton.addListener(new FullscreenButtonListener(fullscreenButton));
         this.add(selectBox);
-        this.row();
-        this.add(fullscreenButton);
     }
 
     public void changeFractal(Fractal fractal) {
