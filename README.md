@@ -1,7 +1,16 @@
 # fractalApp
 
 Simple application for exploring 2d fractals / generate wall papers. 
-Feel free to download [current release](FractalApp-1.0.0.zip) and test it for yourself :)
+
+## Requirenments:
+
+Installed java
+
+## Run:
+
+Execute in command line:
+
+./gradlew desktop:run
 
 ## Controls:
 
@@ -11,8 +20,6 @@ Feel free to download [current release](FractalApp-1.0.0.zip) and test it for yo
 - move camera: arrows
 - (Optional) move fractal starting point: ctrl + arrows  
 
+# Screens
 
-#DEV
-## create jar 
-
-gradlew desktop:dist 
+![julia set example](https://user-images.githubusercontent.com/26636050/104812586-7a018c00-5803-11eb-84e9-aebc71047e62.png)
