@@ -19,6 +19,8 @@ import com.zoraw.fractal.common.Zoom;
 import com.zoraw.fractal.juliaset.settings.*;
 import com.zoraw.fractal.juliaset.settings.animation.AnimateButtonEvent;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.zip.Deflater;
 
 public class JuliaSet extends FractalActor implements EventListener {
@@ -86,15 +88,16 @@ public class JuliaSet extends FractalActor implements EventListener {
     }
 
     private void animateFractal(AnimateButtonEvent animateButtonEvent) {
-        if(!progressBarAnimationActor.isShown()) {
+        if (!progressBarAnimationActor.isShown()) {
             animationCounter = 0;
             addProgressBarActor(progressBarAnimationActor);
             addProgressBarActor(progressBarFractalActor);
             new Thread(() -> {
-                animateInDirection(animateButtonEvent, Direction.RIGHT);
-                animateInDirection(animateButtonEvent, Direction.DOWN);
-                animateInDirection(animateButtonEvent, Direction.LEFT);
-                animateInDirection(animateButtonEvent, Direction.UP);
+                String animationDir = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss").format(new Date());
+                animateInDirection(animateButtonEvent, Direction.RIGHT, animationDir);
+                animateInDirection(animateButtonEvent, Direction.DOWN, animationDir);
+                animateInDirection(animateButtonEvent, Direction.LEFT, animationDir);
+                animateInDirection(animateButtonEvent, Direction.UP, animationDir);
                 Gdx.app.postRunnable(() -> {
                     removeProgressBarActor(progressBarAnimationActor);
                     removeProgressBarActor(progressBarFractalActor);
@@ -103,20 +106,20 @@ public class JuliaSet extends FractalActor implements EventListener {
         }
     }
 
-    private void animateInDirection(AnimateButtonEvent animateButtonEvent, Direction direction) {
+    private void animateInDirection(AnimateButtonEvent animateButtonEvent, Direction direction, String animationDir) {
         for (int i = 0; i < animateButtonEvent.getNumberOfFrames(); i++) {
             animationProgress = animationCounter / (float) (animateButtonEvent.getNumberOfFrames() * 4);
             Pixmap pixmap = juliaSetDrawer.getPixMap(settings.copy());
-            saveToFile(pixmap);
+            saveToFile(pixmap, animationDir);
             pixmap.dispose();
             settings.moveJulia(direction);
         }
     }
 
-    private void saveToFile(Pixmap pixmap) {
+    private void saveToFile(Pixmap pixmap, String animationDir) {
         pixmap.setFilter(Pixmap.Filter.NearestNeighbour);
         pixmap.setColor(Color.BLACK);
-        PixmapIO.writePNG(new FileHandle(getFileName()), pixmap, Deflater.NO_COMPRESSION, false);
+        PixmapIO.writePNG(new FileHandle(getFileName(animationDir)), pixmap, Deflater.NO_COMPRESSION, false);
     }
 
     public void zoom(Zoom zoom) {
@@ -170,7 +173,7 @@ public class JuliaSet extends FractalActor implements EventListener {
             new Thread(() -> {
                 Pixmap pixmap = juliaSetDrawer.getPixMap(settings.copy());
                 Gdx.app.postRunnable(() -> {
-                    saveToFile(pixmap);
+                    saveToFile(pixmap, "out");
                     pixmap.dispose();
                     removeProgressBarActor(progressBarFractalActor);
                 });
@@ -193,8 +196,8 @@ public class JuliaSet extends FractalActor implements EventListener {
         settingsTable.updateTextFields(settings);
     }
 
-    private String getFileName() {
-        return "img-" + animationCounter++ + ".png";
+    private String getFileName(String animationDir) {
+        return animationDir + "/" + "img-" + animationCounter++ + ".png";
     }
 
     @Override
