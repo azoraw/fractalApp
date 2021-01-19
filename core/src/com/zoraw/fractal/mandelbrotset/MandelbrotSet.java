@@ -31,7 +31,7 @@ public class MandelbrotSet extends FractalActor implements EventListener {
     private Pixmap pixmap;
     private Settings settings;
     private Sprite sprite;
-    private ProgressBarActor progressBar = new ProgressBarActor();
+    private ProgressBarActor progressBar = new ProgressBarActor(10, 10, 1000, 200);
 
     public MandelbrotSet(Viewport viewport) {
         this.addListener(this);

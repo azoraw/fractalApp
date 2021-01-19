@@ -26,10 +26,13 @@ public class JuliaSet extends FractalActor implements EventListener {
     private final int FRACTAL_WIDTH;
     private final int FRACTAL_HEIGHT;
     private final JuliaSetDrawer juliaSetDrawer;
-    private final ProgressBarActor progressBar = new ProgressBarActor();
+    private final ProgressBarActor progressBarFractalActor = new ProgressBarActor(10, 30, 1000, 200);
+    private final ProgressBarActor progressBarAnimationActor = new ProgressBarActor(10, 10, 1000, 200);
+
     private Settings settings;
     private Sprite sprite;
     private int animationCounter = 0;
+    private float animationProgress;
 
     public JuliaSet(Viewport viewport) {
         this.addListener(this);
@@ -54,8 +57,11 @@ public class JuliaSet extends FractalActor implements EventListener {
         if (sprite != null) {
             sprite.draw(batch);
         }
-        if (progressBar.isShown()) {
-            progressBar.getProgressBar().setValue(juliaSetDrawer.progress);
+        if (progressBarFractalActor.isShown()) {
+            progressBarFractalActor.getProgressBar().setValue(juliaSetDrawer.progress);
+        }
+        if (progressBarAnimationActor.isShown()) {
+            progressBarAnimationActor.getProgressBar().setValue(animationProgress);
         }
         this.drawChildren(batch, parentAlpha);
     }
@@ -80,17 +86,26 @@ public class JuliaSet extends FractalActor implements EventListener {
     }
 
     private void animateFractal(AnimateButtonEvent animateButtonEvent) {
-        animationCounter = 0;
-        new Thread(() -> { //todo: add progress bar
-            animateInDirection(animateButtonEvent, Direction.RIGHT);
-            animateInDirection(animateButtonEvent, Direction.DOWN);
-            animateInDirection(animateButtonEvent, Direction.LEFT);
-            animateInDirection(animateButtonEvent, Direction.UP);
-        }).start();
+        if(!progressBarAnimationActor.isShown()) {
+            animationCounter = 0;
+            addProgressBarActor(progressBarAnimationActor);
+            addProgressBarActor(progressBarFractalActor);
+            new Thread(() -> {
+                animateInDirection(animateButtonEvent, Direction.RIGHT);
+                animateInDirection(animateButtonEvent, Direction.DOWN);
+                animateInDirection(animateButtonEvent, Direction.LEFT);
+                animateInDirection(animateButtonEvent, Direction.UP);
+                Gdx.app.postRunnable(() -> {
+                    removeProgressBarActor(progressBarAnimationActor);
+                    removeProgressBarActor(progressBarFractalActor);
+                });
+            }).start();
+        }
     }
 
     private void animateInDirection(AnimateButtonEvent animateButtonEvent, Direction direction) {
         for (int i = 0; i < animateButtonEvent.getNumberOfFrames(); i++) {
+            animationProgress = animationCounter / (float) (animateButtonEvent.getNumberOfFrames() * 4);
             Pixmap pixmap = juliaSetDrawer.getPixMap(settings.copy());
             saveToFile(pixmap);
             pixmap.dispose();
@@ -103,6 +118,7 @@ public class JuliaSet extends FractalActor implements EventListener {
         pixmap.setColor(Color.BLACK);
         PixmapIO.writePNG(new FileHandle(getFileName()), pixmap, Deflater.NO_COMPRESSION, false);
     }
+
     public void zoom(Zoom zoom) {
         this.settings.zoom(zoom);
         updateSettingTable();
@@ -135,37 +151,41 @@ public class JuliaSet extends FractalActor implements EventListener {
     }
 
     private void updateFractal() {
-        if (!progressBar.isShown()) {
-            progressBar.setShown(true);
-            this.addActor(progressBar.getProgressBar());
+        if (!progressBarFractalActor.isShown()) {
+            addProgressBarActor(progressBarFractalActor);
             new Thread(() -> {
                 Pixmap pixmap = juliaSetDrawer.getPixMap(settings.copy());
                 Gdx.app.postRunnable(() -> {
                     sprite = new Sprite(new Texture(pixmap));
-                    cleanAfterProcessing(pixmap);
+                    pixmap.dispose();
+                    removeProgressBarActor(progressBarFractalActor);
                 });
             }).start();
         }
     }
 
     private void saveFractal() {
-        if (!progressBar.isShown()) {
-            progressBar.setShown(true);
-            this.addActor(progressBar.getProgressBar());
+        if (!progressBarFractalActor.isShown()) {
+            addProgressBarActor(progressBarFractalActor);
             new Thread(() -> {
                 Pixmap pixmap = juliaSetDrawer.getPixMap(settings.copy());
                 Gdx.app.postRunnable(() -> {
                     saveToFile(pixmap);
-                    cleanAfterProcessing(pixmap);
+                    pixmap.dispose();
+                    removeProgressBarActor(progressBarFractalActor);
                 });
             }).start();
         }
     }
 
-    private void cleanAfterProcessing(Pixmap pixmap) {
-        this.removeActor(progressBar.getProgressBar());
-        pixmap.dispose();
-        progressBar.setShown(false);
+    private void addProgressBarActor(ProgressBarActor progressBarActor) {
+        progressBarActor.setShown(true);
+        this.addActor(progressBarActor.getProgressBar());
+    }
+
+    private void removeProgressBarActor(ProgressBarActor progressBarActor) {
+        progressBarActor.setShown(false);
+        this.removeActor(progressBarActor.getProgressBar());
     }
 
     private void updateSettingTable() {

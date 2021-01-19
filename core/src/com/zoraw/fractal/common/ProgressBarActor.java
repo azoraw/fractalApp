@@ -14,18 +14,18 @@ import static com.badlogic.gdx.scenes.scene2d.ui.ProgressBar.*;
 @Getter
 public class ProgressBarActor {
 
-    private ProgressBar progressBar = createProgressBar();
+    private final ProgressBar progressBar;
 
     @Setter
     private boolean isShown = false;
 
-    private ProgressBar createProgressBar() {
-        ProgressBar progressBar = new ProgressBar(0.0f, 1.0f, 0.01f, false, createSkin());
+    public ProgressBarActor(int x, int y, int width, int height) {
+        progressBar = new ProgressBar(0.0f, 1.0f, 0.01f, false, createSkin());
         progressBar.setValue(0f);
         progressBar.setAnimateDuration(0.5f);
-        progressBar.setBounds(10, 10, 1000, 200);
-        return progressBar;
+        progressBar.setBounds(x, y, width, height);
     }
+
 
     private ProgressBarStyle createSkin() {
         Pixmap pixmap = new Pixmap(100, 20, Pixmap.Format.RGBA8888);
